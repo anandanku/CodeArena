@@ -381,16 +381,18 @@
 
     /* ── Button handler ── */
     function handleLogin(btn) {
-      btn.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M12 7v5l3 3" stroke-dasharray="20" stroke-dashoffset="20" style="animation: dash 0.5s ease forwards">
-        </svg>
-        Redirecting...
-      `;
-      btn.style.opacity = '0.85';
-      btn.style.cursor = 'not-allowed';
-    }
+  btn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 7v5l3 3"/>
+    </svg>
+    Redirecting...
+  `;
+  btn.style.opacity = '0.85';
+  btn.style.cursor = 'not-allowed';
+
+  window.location.href = "/auth/google";
+}
   </script>
 </body>
 </html>
