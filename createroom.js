@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
 const redis = require("../redis/redisClient");
@@ -132,4 +132,5 @@ router.post("/createroom", async (req, res) => {
 
 
 export default router;
+
 
