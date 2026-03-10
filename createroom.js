@@ -24,7 +24,7 @@ function getContestDuration(difficulty) {
     return 3600;
 }
 
-router.post("/create-room", async (req, res) => {
+router.post("/createroom", async (req, res) => {
     try {
 
         const { difficulty, waitingTime } = req.body;
@@ -129,5 +129,6 @@ router.post("/create-room", async (req, res) => {
 
     }
 });
+
 
 module.exports = router;
