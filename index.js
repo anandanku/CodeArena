@@ -9,9 +9,9 @@ import { fileURLToPath } from "url";
 
 /* ROUTERS */
 import authRouter from "./auth.js";
-import createRoomRouter from "./routes/createroom.js";
-import joinRoomRouter from "./routes/joinroom.js";
-import problemsRouter from "./routes/problems.js";
+import createRoomRouter from "./createroom.js";
+import joinRoomRouter from "./joinroom.js";
+import problemsRouter from "./problems.js";
 
 /* ENV */
 dotenv.config();
@@ -112,4 +112,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
