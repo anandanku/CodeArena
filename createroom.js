@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
 
-const redis = require("../redis/redisClient");
-const Problem = require("../models/Problem");
+import redis from "../redisconnection.js";
+import Problem from "../problemschema.js";
 
 function generateRoomCode() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -132,5 +132,6 @@ router.post("/createroom", async (req, res) => {
 
 
 export default router;
+
 
 
