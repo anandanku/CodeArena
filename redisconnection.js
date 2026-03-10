@@ -21,4 +21,5 @@ redis.on("error", (err) => {
   }
 })();
 
-module.exports = redis;
+
+export default redis;
