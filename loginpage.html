@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Where Logic Meets Competition</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --card: rgba(15, 15, 25, 0.85);
+      --purple: #7c3aed;
+      --purple-light: #a78bfa;
+      --purple-glow: rgba(124, 58, 237, 0.45);
+      --border: rgba(124, 58, 237, 0.25);
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --symbol: rgba(124, 58, 237, 0.18);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* ─── CANVAS OF FLOATING SYMBOLS ─── */
+    .symbols-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .sym {
+      position: absolute;
+      font-family: 'Fira Code', monospace;
+      color: var(--symbol);
+      user-select: none;
+      animation: floatUp linear infinite;
+      will-change: transform, opacity;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(-15vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ─── GRID LINES ─── */
+    .grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* ─── RADIAL GLOW ─── */
+    .glow-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(124,58,237,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ─── MAIN LAYOUT ─── */
+    .scene {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px 44px;
+      backdrop-filter: blur(24px);
+      box-shadow:
+        0 0 0 1px rgba(124,58,237,0.08),
+        0 32px 80px rgba(0,0,0,0.6),
+        0 0 60px var(--purple-glow),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: cardIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(32px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ─── LOGO / ICON ─── */
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .logo-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, var(--purple), #4f46e5);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fira Code', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: 0 0 24px var(--purple-glow), 0 4px 12px rgba(0,0,0,0.4);
+      letter-spacing: -1px;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 24px var(--purple-glow), 0 4px 12px rgba(0,0,0,0.4); }
+      50%       { box-shadow: 0 0 40px rgba(124,58,237,0.65), 0 4px 12px rgba(0,0,0,0.4); }
+    }
+
+    /* ─── HEADLINE ─── */
+    .headline {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .headline h1 {
+      font-family: 'Fira Code', monospace;
+      font-size: 22px;
+      font-weight: 600;
+      color: #f1f5f9;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .headline h1 span {
+      color: var(--purple-light);
+    }
+
+    /* ─── QUOTE ─── */
+    .quote {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .quote p {
+      font-family: 'Fira Code', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      position: relative;
+      display: inline-block;
+    }
+
+
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .divider span {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    /* ─── GOOGLE BUTTON ─── */
+    .btn-google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 24px;
+      background: linear-gradient(135deg, var(--purple) 0%, #5b21b6 100%);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 4px 20px var(--purple-glow), 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .btn-google::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 60%);
+      pointer-events: none;
+    }
+
+    .btn-google::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+    }
+
+    .btn-google:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px var(--purple-glow), 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .btn-google:active {
+      transform: translateY(0px);
+    }
+
+    .btn-google:active::after {
+      width: 300px; height: 300px; opacity: 0;
+    }
+
+    /* Google G icon */
+    .google-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* ─── FOOTER LINKS ─── */
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 28px;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'Fira Code', monospace;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--purple-light);
+    }
+
+    /* ─── STATUS DOT ─── */
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .status span {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Grid -->
+  <div class="grid"></div>
+  <div class="glow-bg"></div>
+
+  <!-- Floating Symbols Layer -->
+  <div class="symbols-layer" id="symbolsLayer"></div>
+
+  <!-- Main Scene -->
+  <div class="scene">
+    <div class="card">
+
+      <!-- Logo -->
+      <div class="logo">
+        <div class="logo-icon">&lt;/&gt;</div>
+      </div>
+
+
+      <div class="quote">
+        <p>&lt;Where logic meets competition&gt;</p>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span>SIGN IN</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- Google Login Button -->
+      <button class="btn-google" onclick="handleLogin(this)">
+        <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#ffffff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="rgba(255,255,255,0.85)" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="rgba(255,255,255,0.7)" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="rgba(255,255,255,0.9)" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Login with Google
+      </button>
+
+
+    </div>
+  </div>
+
+  <script>
+    /* ── Spawn floating symbols ── */
+    const SYMBOLS = [';', ',', ':', '>', '<', '&', '#', '@'];
+    const layer = document.getElementById('symbolsLayer');
+    const COUNT = 55;
+
+    for (let i = 0; i < COUNT; i++) {
+      const el = document.createElement('span');
+      el.classList.add('sym');
+      el.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+      const size   = 14 + Math.random() * 28;
+      const left   = Math.random() * 100;
+      const delay  = Math.random() * 20;
+      const dur    = 14 + Math.random() * 18;
+      const opacity = 0.08 + Math.random() * 0.2;
+
+      el.style.cssText = `
+        left: ${left}%;
+        bottom: -60px;
+        font-size: ${size}px;
+        animation-duration: ${dur}s;
+        animation-delay: -${delay}s;
+        opacity: ${opacity};
+        color: rgba(167,139,250,${opacity});
+      `;
+      layer.appendChild(el);
+    }
+
+    /* ── Button handler ── */
+    function handleLogin(btn) {
+      btn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 3" stroke-dasharray="20" stroke-dashoffset="20" style="animation: dash 0.5s ease forwards">
+        </svg>
+        Redirecting...
+      `;
+      btn.style.opacity = '0.85';
+      btn.style.cursor = 'not-allowed';
+    }
+  </script>
+</body>
+</html>
