@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const redis = require("../redis/redisClient");
+const redis = require("../redisconnection.js");
 
 router.post("/joinroom", async (req, res) => {
 
@@ -55,3 +55,4 @@ router.post("/joinroom", async (req, res) => {
 
 
 export default router;
+
