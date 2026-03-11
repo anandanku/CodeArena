@@ -3,11 +3,6 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import dotenv from "dotenv";
 import { User } from "./userschema.js";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -62,11 +57,6 @@ passport.use(
     }
   )
 );
-
-router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "loginpage.html"));
-});
-
 router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -101,6 +91,7 @@ router.get("/auth/me", (req, res) => {
 });
 
 export default router;
+
 
 
 
