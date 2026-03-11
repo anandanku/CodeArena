@@ -95,7 +95,7 @@ app.use("/", problemsRouter);
 /* FRONTEND ROUTES */
 /* ============================= */
 
-app.get("/login", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/loginpage.html"));
 });
 
@@ -112,6 +112,7 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
