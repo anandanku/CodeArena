@@ -4,6 +4,10 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import dotenv from "dotenv";
 import { User } from "./userschema.js";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -97,5 +101,6 @@ router.get("/auth/me", (req, res) => {
 });
 
 export default router;
+
 
 
