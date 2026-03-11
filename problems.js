@@ -37,10 +37,9 @@ router.get("/problems", async (req, res) => {
     });
 
   }
-
+});
 export default router;
 
-});
 
 
 
