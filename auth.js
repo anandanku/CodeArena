@@ -3,6 +3,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import dotenv from "dotenv";
 import { User } from "./userschema.js";
+import path from "path";
 
 dotenv.config();
 
@@ -96,4 +97,5 @@ router.get("/auth/me", (req, res) => {
 });
 
 export default router;
+
 
