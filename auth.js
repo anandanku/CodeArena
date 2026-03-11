@@ -69,7 +69,7 @@ router.get(
 );
 
 router.get("/", (req, res) => {
-  res.redirect("public/loginpage.html");
+  res.redirect("/loginpage.html");
 });
 
 router.get(
@@ -101,6 +101,7 @@ router.get("/auth/me", (req, res) => {
 });
 
 export default router;
+
 
 
 
