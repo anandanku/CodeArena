@@ -58,6 +58,10 @@ passport.use(
   )
 );
 
+router.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "loginpage.html"));
+});
+
 router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -92,3 +96,4 @@ router.get("/auth/me", (req, res) => {
 });
 
 export default router;
+
