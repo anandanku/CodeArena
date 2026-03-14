@@ -61,9 +61,7 @@
       backdrop-filter: blur(24px);
       gap: 12px;
     }
-
     .topbar-left { display: flex; align-items: center; gap: 10px; flex: 1; }
-
     .logo-box {
       width: 32px; height: 32px;
       background: linear-gradient(135deg, var(--purple), #4f46e5);
@@ -74,108 +72,46 @@
       box-shadow: 0 0 14px var(--purple-glow);
       flex-shrink: 0;
     }
-
     .contest-meta { display: flex; flex-direction: column; }
-
     .contest-name {
       font-family: 'Fira Code', monospace;
       font-size: 12px; font-weight: 600;
       color: var(--purple-light); line-height: 1;
     }
-
     .contest-timer {
       font-family: 'Fira Code', monospace;
       font-size: 11px; color: var(--text-dim); margin-top: 2px;
     }
-
     .timer-val { color: var(--purple-xlight); font-weight: 600; }
 
-    /* ── WAITING BANNER ── */
-    .waiting-banner {
-      display: none;
-      position: fixed; inset: 0; z-index: 500;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(12px);
-      align-items: center; justify-content: center;
-    }
-    .waiting-banner.show { display: flex; }
-
-    .waiting-box {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 40px 36px;
-      text-align: center;
-      width: 400px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-    }
-
-    .waiting-icon { font-size: 40px; margin-bottom: 14px; }
-
-    .waiting-title {
-      font-family: 'Fira Code', monospace;
-      font-size: 20px; font-weight: 700;
-      color: #f1f5f9; margin-bottom: 6px;
-    }
-
-    .waiting-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
-
-    .waiting-room-code-block {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      background: rgba(124,58,237,0.12);
-      border: 1px solid rgba(124,58,237,0.35);
-      border-radius: 12px;
-      padding: 14px 20px;
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: background 0.2s;
-      position: relative;
-      user-select: none;
-    }
-    .waiting-room-code-block:hover { background: rgba(124,58,237,0.22); }
-
-    .waiting-room-code-val {
-      font-family: 'Fira Code', monospace;
-      font-size: 28px; font-weight: 700;
-      color: var(--purple-xlight);
-      letter-spacing: 6px;
-    }
-
-    .waiting-copy-hint {
-      font-family: 'Fira Code', monospace;
-      font-size: 10px; color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .waiting-countdown {
-      font-family: 'Fira Code', monospace;
-      font-size: 48px; font-weight: 700;
-      color: var(--purple-xlight);
-      text-shadow: 0 0 30px var(--purple-glow);
-      margin-bottom: 16px;
-    }
-
-    .waiting-players {
-      font-family: 'Fira Code', monospace;
-      font-size: 12px; color: var(--muted);
-    }
-    .waiting-players span { color: var(--green); }
-
-    .copy-toast-banner {
-      position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
-      background: rgba(16,185,129,0.9);
-      color: #fff; font-family: 'Fira Code', monospace; font-size: 10px;
-      padding: 3px 10px; border-radius: 5px;
-      white-space: nowrap; pointer-events: none;
-      opacity: 0; transition: opacity 0.2s;
-    }
-    .copy-toast-banner.show { opacity: 1; }
-
-    /* topbar center — lang select only */
+    /* topbar center: submit first, then lang */
     .topbar-center {
       display: flex; align-items: center; gap: 10px;
       position: absolute; left: 50%; transform: translateX(-50%);
     }
+
+    .btn-submit {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 20px;
+      background: linear-gradient(135deg, var(--green) 0%, #059669 100%);
+      border: none; border-radius: 9px;
+      color: #fff;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 16px var(--green-glow);
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative; overflow: hidden;
+    }
+    .btn-submit::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 60%);
+      pointer-events: none;
+    }
+    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 24px var(--green-glow); }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     .lang-select {
       background: rgba(124,58,237,0.1);
@@ -195,7 +131,6 @@
       display: flex; align-items: center; gap: 10px;
       flex: 1; justify-content: flex-end;
     }
-
     .lb-toggle-btn {
       display: flex; align-items: center; gap: 6px;
       padding: 6px 12px;
@@ -214,6 +149,77 @@
       background: rgba(124,58,237,0.2);
       color: var(--purple-xlight);
     }
+
+    /* ── WAITING BANNER ── */
+    .waiting-banner {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(12px);
+      align-items: center; justify-content: center;
+    }
+    .waiting-banner.show { display: flex; }
+    .waiting-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      text-align: center;
+      width: 400px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    }
+    .waiting-icon { font-size: 40px; margin-bottom: 14px; }
+    .waiting-title {
+      font-family: 'Fira Code', monospace;
+      font-size: 20px; font-weight: 700;
+      color: #f1f5f9; margin-bottom: 6px;
+    }
+    .waiting-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+    .waiting-room-code-block {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.35);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+      user-select: none;
+    }
+    .waiting-room-code-block:hover { background: rgba(124,58,237,0.22); }
+    .waiting-room-code-val {
+      font-family: 'Fira Code', monospace;
+      font-size: 28px; font-weight: 700;
+      color: var(--purple-xlight);
+      letter-spacing: 6px;
+    }
+    .waiting-copy-hint {
+      font-family: 'Fira Code', monospace;
+      font-size: 10px; color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .waiting-countdown {
+      font-family: 'Fira Code', monospace;
+      font-size: 48px; font-weight: 700;
+      color: var(--purple-xlight);
+      text-shadow: 0 0 30px var(--purple-glow);
+      margin-bottom: 16px;
+    }
+    .waiting-players {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px; color: var(--muted);
+    }
+    .waiting-players span { color: var(--green); }
+    .copy-toast-banner {
+      position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+      background: rgba(16,185,129,0.9);
+      color: #fff; font-family: 'Fira Code', monospace; font-size: 10px;
+      padding: 3px 10px; border-radius: 5px;
+      white-space: nowrap; pointer-events: none;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .copy-toast-banner.show { opacity: 1; }
 
     /* ── LEADERBOARD ── */
     .lb-dropdown {
@@ -302,19 +308,16 @@
       height: calc(100vh - var(--topbar-h));
       overflow: hidden;
     }
-
     .pane-problem {
       display: flex; flex-direction: column;
       overflow: hidden; min-width: 280px;
       background: var(--surface); flex-shrink: 0;
     }
-
     .pane-problem-header {
       padding: 14px 20px 12px;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
-
     .problem-badge {
       font-family: 'Fira Code', monospace;
       font-size: 10px; font-weight: 600;
@@ -323,9 +326,7 @@
     .badge-easy   { background: rgba(16,185,129,0.15); color: var(--easy); border: 1px solid rgba(16,185,129,0.3); }
     .badge-medium { background: rgba(245,158,11,0.15); color: var(--medium); border: 1px solid rgba(245,158,11,0.3); }
     .badge-hard   { background: rgba(239,68,68,0.15); color: var(--hard); border: 1px solid rgba(239,68,68,0.3); }
-
     .problem-num { font-family: 'Fira Code', monospace; font-size: 11px; color: var(--muted); }
-
     .problem-nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
     .nav-btn {
       width: 26px; height: 26px;
@@ -342,18 +343,15 @@
       font-size: 11px; color: var(--muted);
       padding: 0 4px; min-width: 36px; text-align: center;
     }
-
     .pane-problem-scroll { flex: 1; overflow-y: auto; padding: 20px; }
     .pane-problem-scroll::-webkit-scrollbar { width: 4px; }
     .pane-problem-scroll::-webkit-scrollbar-track { background: transparent; }
     .pane-problem-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
     .problem-title {
       font-family: 'Fira Code', monospace;
       font-size: 18px; font-weight: 700;
       color: #f1f5f9; margin-bottom: 14px; line-height: 1.3;
     }
-
     .problem-section-label {
       font-family: 'Fira Code', monospace;
       font-size: 10px; font-weight: 600;
@@ -362,17 +360,13 @@
       margin: 20px 0 8px;
       display: flex; align-items: center; gap: 7px;
     }
-    .problem-section-label::after {
-      content: ''; flex: 1; height: 1px; background: var(--border);
-    }
-
+    .problem-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     .problem-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.75; }
     .problem-desc code {
       font-family: 'Fira Code', monospace; font-size: 12px;
       background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25);
       border-radius: 4px; padding: 1px 6px; color: var(--purple-xlight);
     }
-
     .example-block {
       background: rgba(124,58,237,0.05);
       border: 1px solid var(--border);
@@ -387,7 +381,6 @@
     .example-key { color: var(--muted); }
     .example-val { color: var(--text); white-space: pre-wrap; }
     .example-explain { font-size: 11.5px; color: var(--text-dim); margin-top: 8px; line-height: 1.5; }
-
     .constraints-list { list-style: none; padding: 0; }
     .constraints-list li {
       font-family: 'Fira Code', monospace;
@@ -396,7 +389,6 @@
       display: flex; align-items: center; gap: 8px;
     }
     .constraints-list li::before { content: '▸'; color: var(--purple); font-size: 10px; flex-shrink: 0; }
-
     .skeleton {
       background: linear-gradient(90deg, rgba(124,58,237,0.08) 25%, rgba(124,58,237,0.15) 50%, rgba(124,58,237,0.08) 75%);
       background-size: 200% 100%;
@@ -417,83 +409,34 @@
     }
     .divider:hover::after, .divider.dragging::after { background: rgba(167,139,250,0.8); }
 
+    /* ── EDITOR PANE ── */
     .pane-editor {
       flex: 1; display: flex; flex-direction: column;
       overflow: hidden; min-width: 280px; background: var(--surface2);
     }
-
     .editor-topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 6px 14px; border-bottom: 1px solid var(--border);
       background: rgba(10,10,15,0.6); flex-shrink: 0;
     }
-
-    .editor-tabs { display: flex; gap: 4px; }
-
     .editor-tab {
       font-family: 'Fira Code', monospace; font-size: 11px;
-      padding: 4px 12px; border-radius: 6px; cursor: pointer;
-      border: 1px solid transparent; color: var(--muted); transition: all 0.15s;
-    }
-    .editor-tab.active { background: rgba(124,58,237,0.18); border-color: var(--border); color: var(--purple-xlight); }
-    .editor-tab:hover:not(.active) { color: var(--text-dim); background: rgba(255,255,255,0.03); }
-
-    .editor-actions { display: flex; gap: 8px; align-items: center; }
-
-    /* Submit is now the primary action button */
-    .btn-submit {
-      display: flex; align-items: center; gap: 7px;
-      padding: 7px 20px;
-      background: linear-gradient(135deg, var(--green) 0%, #059669 100%);
-      border: none; border-radius: 9px;
-      color: #fff;
-      font-family: 'Fira Code', monospace;
-      font-size: 13px; font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 0 16px var(--green-glow);
-      transition: transform 0.15s, box-shadow 0.15s;
-      position: relative; overflow: hidden;
-    }
-    .btn-submit::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 60%);
-      pointer-events: none;
-    }
-    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 24px var(--green-glow); }
-    .btn-submit:active { transform: translateY(0); }
-    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-    .code-editor-wrap { flex: 1; position: relative; overflow: hidden; }
-
-    .line-numbers {
-      position: absolute; left: 0; top: 0; bottom: 0; width: 44px;
-      background: rgba(0,0,0,0.2); border-right: 1px solid var(--border);
-      padding: 14px 0; overflow: hidden; pointer-events: none; z-index: 2;
-    }
-    .line-num {
-      font-family: 'Fira Code', monospace; font-size: 12px; color: var(--muted);
-      text-align: right; padding: 0 10px; line-height: 21px; user-select: none;
+      padding: 4px 12px; border-radius: 6px;
+      border: 1px solid var(--border);
+      background: rgba(124,58,237,0.18);
+      color: var(--purple-xlight);
     }
 
-    .code-textarea {
-      position: absolute; inset: 0;
-      padding: 14px 14px 14px 58px;
-      background: transparent; border: none; outline: none; resize: none;
-      color: var(--text); font-family: 'Fira Code', monospace;
-      font-size: 13px; line-height: 21px; tab-size: 4;
-      width: 100%; height: 100%;
-      caret-color: var(--purple-light);
-    }
-    .code-textarea::selection { background: rgba(124,58,237,0.3); }
+    /* Monaco container — fills remaining pane height */
+    .monaco-container { flex: 1; overflow: hidden; }
 
+    /* Output pane */
     .output-pane {
       height: 0; border-top: 1px solid var(--border);
       background: rgba(8,8,14,0.9); overflow: hidden;
       transition: height 0.35s cubic-bezier(0.4,0,0.2,1); flex-shrink: 0;
     }
     .output-pane.open { height: 200px; }
-
     .output-header {
       display: flex; align-items: center; justify-content: space-between;
       padding: 8px 16px; border-bottom: 1px solid var(--border);
@@ -510,10 +453,8 @@
     .status-running  { background: rgba(245,158,11,0.15); color: var(--medium); border: 1px solid rgba(245,158,11,0.3); }
     .status-accepted { background: rgba(16,185,129,0.15); color: var(--easy);   border: 1px solid rgba(16,185,129,0.3); }
     .status-error    { background: rgba(239,68,68,0.15);  color: var(--hard);   border: 1px solid rgba(239,68,68,0.3); }
-
     .output-close { cursor: pointer; color: var(--muted); font-size: 16px; line-height: 1; transition: color 0.15s; }
     .output-close:hover { color: var(--text); }
-
     .output-body {
       padding: 12px 16px; font-family: 'Fira Code', monospace;
       font-size: 12px; color: var(--text-dim); line-height: 1.6;
@@ -564,16 +505,17 @@
     </div>
   </div>
 
+  <!-- Submit first, then language selector -->
   <div class="topbar-center">
-    <select class="lang-select" id="langSelect">
-      <option value="python">Python 3</option>
-      <option value="cpp">C++17</option>
-      <option value="java">Java 17</option>
-    </select>
     <button class="btn-submit" id="submitBtn" onclick="submitCode()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
       Submit
     </button>
+    <select class="lang-select" id="langSelect" onchange="onLangChange()">
+      <option value="python">Python 3</option>
+      <option value="cpp">C++17</option>
+      <option value="java">Java 17</option>
+    </select>
   </div>
 
   <div class="topbar-right">
@@ -628,20 +570,13 @@
 
   <div class="divider" id="divider"></div>
 
-  <!-- RIGHT: Editor -->
+  <!-- RIGHT: Monaco Editor -->
   <div class="pane-editor" id="paneRight">
     <div class="editor-topbar">
-      <div class="editor-tabs">
-        <div class="editor-tab active" id="activeTab">solution.py</div>
-      </div>
+      <div class="editor-tab" id="activeTab">solution.py</div>
     </div>
-
-    <div class="code-editor-wrap">
-      <div class="line-numbers" id="lineNumbers"><div class="line-num">1</div></div>
-      <textarea class="code-textarea" id="codeEditor" spellcheck="false" autocorrect="off" autocapitalize="off"
-        oninput="updateLineNumbers()" onscroll="syncScroll()"
-        placeholder="# Write your solution here..."></textarea>
-    </div>
+    <!-- Monaco mounts here -->
+    <div class="monaco-container" id="monacoContainer"></div>
 
     <div class="output-pane" id="outputPane">
       <div class="output-header">
@@ -657,6 +592,9 @@
 
 </div>
 
+<!-- Monaco Editor loader -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+
 <script>
   /* ════════════════════════════════════════════════
      ROOM CODE
@@ -668,11 +606,87 @@
   /* ════════════════════════════════════════════════
      STATE
   ════════════════════════════════════════════════ */
-  let allProblems         = [];
-  let currentProblemIndex = 0;
-  let contestTimerSecs    = 0;
+  let allProblems          = [];
+  let currentProblemIndex  = 0;
+  let contestTimerSecs     = 0;
   let contestTimerInterval = null;
   let waitingInterval      = null;
+  let monacoEditor         = null;   // Monaco instance
+
+  /* ════════════════════════════════════════════════
+     MONACO INIT
+  ════════════════════════════════════════════════ */
+  require.config({
+    paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }
+  });
+
+  require(['vs/editor/editor.main'], function() {
+    monacoEditor = monaco.editor.create(document.getElementById('monacoContainer'), {
+      value:             '# Write your solution here...',
+      language:          'python',
+      theme:             'vs-dark',
+      fontSize:          13,
+      fontFamily:        "'Fira Code', monospace",
+      fontLigatures:     true,
+      minimap:           { enabled: false },
+      scrollBeyondLastLine: false,
+      lineNumbers:       'on',
+      renderLineHighlight: 'line',
+      automaticLayout:   true,          // resizes with pane drag
+      tabSize:           4,
+      insertSpaces:      true,
+      wordWrap:          'off',
+      padding:           { top: 14, bottom: 14 },
+      scrollbar: {
+        verticalScrollbarSize:   6,
+        horizontalScrollbarSize: 6,
+      },
+    });
+
+    // Custom dark theme matching the app palette
+    monaco.editor.defineTheme('codearena-dark', {
+      base:    'vs-dark',
+      inherit: true,
+      rules:   [],
+      colors: {
+        'editor.background':           '#0d0d18',
+        'editor.foreground':           '#e2e8f0',
+        'editor.lineHighlightBackground': '#1a1a2e',
+        'editorLineNumber.foreground': '#475569',
+        'editorLineNumber.activeForeground': '#a78bfa',
+        'editor.selectionBackground':  '#7c3aed44',
+        'editorCursor.foreground':     '#a78bfa',
+        'editorIndentGuide.background1': '#1e1e3a',
+      }
+    });
+    monaco.editor.setTheme('codearena-dark');
+
+    // Now that Monaco is ready, fetch problems
+    fetchAllProblems();
+  });
+
+  /* ════════════════════════════════════════════════
+     LANGUAGE → MONACO LANGUAGE MAP
+  ════════════════════════════════════════════════ */
+  const LANG_MAP = { python: 'python', cpp: 'cpp', java: 'java' };
+  const EXT_MAP  = { python: 'py',     cpp: 'cpp', java: 'java' };
+
+  function onLangChange() {
+    const lang = document.getElementById('langSelect').value;
+    document.getElementById('activeTab').textContent = `solution.${EXT_MAP[lang]}`;
+
+    // Switch Monaco language
+    if (monacoEditor) {
+      const model = monacoEditor.getModel();
+      if (model) monaco.editor.setModelLanguage(model, LANG_MAP[lang]);
+    }
+
+    // Load snippet for current problem in new language
+    const p = allProblems[currentProblemIndex];
+    if (p?.snippets && monacoEditor) {
+      monacoEditor.setValue(p.snippets[lang] || '');
+    }
+  }
 
   /* ════════════════════════════════════════════════
      FETCH PROBLEMS + TIMING FROM SERVER
@@ -687,9 +701,6 @@
       allProblems             = data.problems;
       window._contestDuration = data.contestDuration || 3600;
 
-      // Use contestStartTime if present (new rooms after createroom.js fix)
-      // Fallback: createdAt + waitingTime*60s (older rooms stored in Redis)
-      // Last resort: treat as already running from now
       if (data.contestStartTime) {
         window._contestStartTime = data.contestStartTime;
       } else if (data.createdAt && data.waitingTime) {
@@ -712,28 +723,23 @@
   }
 
   /* ════════════════════════════════════════════════
-     PHASE LOGIC — uses server contestStartTime
-     so timer is correct even after refresh
+     PHASE LOGIC
   ════════════════════════════════════════════════ */
   function startPhaseLogic() {
-    const now              = Date.now();
-    const contestStartTime = window._contestStartTime;
-    const contestEndTime   = contestStartTime + (window._contestDuration * 1000);
+    const now            = Date.now();
+    const startTime      = window._contestStartTime;
+    const endTime        = startTime + (window._contestDuration * 1000);
 
-    if (now < contestStartTime) {
-      // still in waiting phase
-      showWaitingBanner(contestStartTime - now);
-    } else if (now < contestEndTime) {
-      // contest running — calculate real remaining seconds
-      contestTimerSecs = Math.floor((contestEndTime - now) / 1000);
+    if (now < startTime) {
+      showWaitingBanner(startTime - now);
+    } else if (now < endTime) {
+      contestTimerSecs = Math.floor((endTime - now) / 1000);
       startContest();
     } else {
-      // already ended
       onContestEnd();
     }
   }
 
-  /* ── Waiting phase ── */
   function showWaitingBanner(waitingMs) {
     document.getElementById('waitingBanner').classList.add('show');
     let remainingMs = waitingMs;
@@ -742,9 +748,8 @@
       if (remainingMs <= 0) {
         clearInterval(waitingInterval);
         document.getElementById('waitingBanner').classList.remove('show');
-        // recalculate real remaining contest time at the moment contest starts
-        const contestEndTime = window._contestStartTime + (window._contestDuration * 1000);
-        contestTimerSecs = Math.floor((contestEndTime - Date.now()) / 1000);
+        const endTime = window._contestStartTime + (window._contestDuration * 1000);
+        contestTimerSecs = Math.floor((endTime - Date.now()) / 1000);
         startContest();
         return;
       }
@@ -755,12 +760,10 @@
         `${m}:${String(s).padStart(2,'0')}`;
       remainingMs -= 1000;
     }
-
     tick();
     waitingInterval = setInterval(tick, 1000);
   }
 
-  /* ── Contest phase ── */
   function startContest() {
     document.getElementById('waitingBanner').classList.remove('show');
 
@@ -781,7 +784,6 @@
       else if (contestTimerSecs < 900)  el.style.color = 'var(--medium)';
       else                              el.style.color = 'var(--purple-xlight)';
     }
-
     tick();
     contestTimerInterval = setInterval(tick, 1000);
   }
@@ -793,7 +795,7 @@
   }
 
   /* ════════════════════════════════════════════════
-     COPY ROOM CODE (waiting banner only)
+     COPY ROOM CODE
   ════════════════════════════════════════════════ */
   function copyRoomCode() {
     navigator.clipboard.writeText(ROOM_CODE).catch(() => {
@@ -824,8 +826,6 @@
       content.style.opacity = '1';
     }, 180);
     updateNavButtons();
-    document.getElementById('codeEditor').value = '';
-    updateLineNumbers();
   }
 
   function updateNavButtons() {
@@ -869,10 +869,13 @@
     html += `<div style="height:32px"></div>`;
     document.getElementById('problemContent').innerHTML = html;
 
-    const lang   = document.getElementById('langSelect').value;
-    const editor = document.getElementById('codeEditor');
-    editor.value = data.snippets?.[lang] || '';
-    updateLineNumbers();
+    // Load snippet into Monaco
+    if (monacoEditor) {
+      const lang = document.getElementById('langSelect').value;
+      monacoEditor.setValue(data.snippets?.[lang] || '');
+      // Update tab label
+      document.getElementById('activeTab').textContent = `solution.${EXT_MAP[lang]}`;
+    }
   }
 
   /* ════════════════════════════════════════════════
@@ -884,7 +887,6 @@
     document.getElementById('lbDropdown').classList.toggle('open', lbOpen);
     document.getElementById('lbToggleBtn').classList.toggle('active', lbOpen);
   }
-
   document.addEventListener('click', e => {
     if (!lbOpen) return;
     const lb  = document.getElementById('lbDropdown');
@@ -897,10 +899,11 @@
   });
 
   /* ════════════════════════════════════════════════
-     SUBMIT CODE — real POST to /submit
+     SUBMIT CODE
   ════════════════════════════════════════════════ */
   async function submitCode() {
-    const code = document.getElementById('codeEditor').value.trim();
+    if (!monacoEditor) return;
+    const code = monacoEditor.getValue().trim();
     const lang = document.getElementById('langSelect').value;
     const btn  = document.getElementById('submitBtn');
 
@@ -913,7 +916,6 @@
     statusEl.className   = 'output-status status-running';
     statusEl.textContent = 'Submitting...';
     bodyEl.innerHTML     = '<span class="out-info">⏳ Running against test cases...</span>';
-
     btn.disabled = true;
 
     try {
@@ -927,11 +929,9 @@
           problem:  allProblems[currentProblemIndex]?.number,
         })
       });
-
       if (!res.ok) throw new Error(`Server error ${res.status}`);
       const data = await res.json();
       renderOutput(data);
-
     } catch(e) {
       statusEl.className   = 'output-status status-error';
       statusEl.textContent = 'Error';
@@ -959,7 +959,6 @@
         Memory: <span style="color:var(--purple-xlight)">${data.memory || '—'}</span>
       </div>`;
     }
-
     (data.results || []).forEach(r => {
       html += `<div style="margin-bottom:6px">
         <span class="${r.pass ? 'out-pass' : 'out-fail'}">${r.pass ? '✓' : '✗'} Test ${r.test}</span>
@@ -969,50 +968,12 @@
         </span>
       </div>`;
     });
-
     bodyEl.innerHTML = html || '<span class="out-info">No output returned.</span>';
   }
 
   function closeOutput() {
     document.getElementById('outputPane').classList.remove('open');
   }
-
-  /* ════════════════════════════════════════════════
-     CODE EDITOR
-  ════════════════════════════════════════════════ */
-  function updateLineNumbers() {
-    const ta    = document.getElementById('codeEditor');
-    const lines = ta.value.split('\n').length;
-    const ln    = document.getElementById('lineNumbers');
-    let html = '';
-    for (let i = 1; i <= lines; i++) html += `<div class="line-num">${i}</div>`;
-    ln.innerHTML = html;
-  }
-
-  function syncScroll() {
-    document.getElementById('lineNumbers').scrollTop =
-      document.getElementById('codeEditor').scrollTop;
-  }
-
-  document.getElementById('codeEditor').addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const s = this.selectionStart, end = this.selectionEnd;
-      this.value = this.value.substring(0, s) + '    ' + this.value.substring(end);
-      this.selectionStart = this.selectionEnd = s + 4;
-      updateLineNumbers();
-    }
-  });
-
-  document.getElementById('langSelect').addEventListener('change', function() {
-    const ext = { cpp:'cpp', java:'java', python:'py' };
-    document.getElementById('activeTab').textContent = `solution.${ext[this.value] || 'txt'}`;
-    const p = allProblems[currentProblemIndex];
-    if (p?.snippets) {
-      document.getElementById('codeEditor').value = p.snippets[this.value] || '';
-      updateLineNumbers();
-    }
-  });
 
   /* ════════════════════════════════════════════════
      DRAGGABLE DIVIDER
@@ -1041,12 +1002,6 @@
     document.body.style.cursor     = '';
     document.body.style.userSelect = '';
   });
-
-  /* ════════════════════════════════════════════════
-     INIT
-  ════════════════════════════════════════════════ */
-  fetchAllProblems();
-  updateLineNumbers();
 </script>
 </body>
 </html>
