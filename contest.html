@@ -12,13 +12,10 @@
       --bg: #0a0a0f;
       --surface: rgba(14,14,24,0.95);
       --surface2: rgba(20,20,36,0.98);
-      --surface3: rgba(26,26,46,0.95);
       --purple: #7c3aed;
-      --purple-mid: #6d28d9;
       --purple-light: #a78bfa;
       --purple-xlight: #c4b5fd;
       --purple-glow: rgba(124,58,237,0.4);
-      --purple-glow2: rgba(124,58,237,0.15);
       --border: rgba(124,58,237,0.2);
       --border-hover: rgba(124,58,237,0.5);
       --text: #e2e8f0;
@@ -123,7 +120,6 @@
 
     .waiting-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
 
-    /* Room code share block inside waiting banner */
     .waiting-room-code-block {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       background: rgba(124,58,237,0.12);
@@ -175,6 +171,7 @@
     }
     .copy-toast-banner.show { opacity: 1; }
 
+    /* topbar center — lang select only */
     .topbar-center {
       display: flex; align-items: center; gap: 10px;
       position: absolute; left: 50%; transform: translateX(-50%);
@@ -194,70 +191,10 @@
     .lang-select:hover, .lang-select:focus { border-color: var(--purple-light); color: var(--text); }
     .lang-select option { background: #1a1a2e; }
 
-    .btn-run {
-      display: flex; align-items: center; gap: 7px;
-      padding: 7px 20px;
-      background: linear-gradient(135deg, var(--green) 0%, #059669 100%);
-      border: none; border-radius: 9px;
-      color: #fff;
-      font-family: 'Fira Code', monospace;
-      font-size: 13px; font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 0 16px var(--green-glow);
-      transition: transform 0.15s, box-shadow 0.15s;
-      position: relative; overflow: hidden;
-    }
-    .btn-run::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 60%);
-      pointer-events: none;
-    }
-    .btn-run:hover { transform: translateY(-1px); box-shadow: 0 4px 24px var(--green-glow); }
-    .btn-run:active { transform: translateY(0); }
-    .btn-run .shortcut {
-      font-size: 10px; opacity: 0.65;
-      background: rgba(0,0,0,0.2);
-      border-radius: 4px; padding: 1px 5px;
-    }
-
     .topbar-right {
       display: flex; align-items: center; gap: 10px;
       flex: 1; justify-content: flex-end;
     }
-
-    .room-code-wrap {
-      display: flex; align-items: center; gap: 6px;
-      background: rgba(124,58,237,0.1);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 5px 10px;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      position: relative;
-    }
-    .room-code-wrap:hover { border-color: var(--purple-light); background: rgba(124,58,237,0.18); }
-    .room-code-label {
-      font-family: 'Fira Code', monospace;
-      font-size: 10px; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .room-code-val {
-      font-family: 'Fira Code', monospace;
-      font-size: 13px; font-weight: 700;
-      color: var(--purple-xlight); letter-spacing: 2px;
-    }
-    .copy-icon { color: var(--muted); transition: color 0.2s; flex-shrink: 0; }
-    .room-code-wrap:hover .copy-icon { color: var(--purple-light); }
-    .copy-toast {
-      position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
-      background: rgba(16,185,129,0.9);
-      color: #fff; font-family: 'Fira Code', monospace; font-size: 10px;
-      padding: 3px 10px; border-radius: 5px;
-      white-space: nowrap; pointer-events: none;
-      opacity: 0; transition: opacity 0.2s;
-    }
-    .copy-toast.show { opacity: 1; }
 
     .lb-toggle-btn {
       display: flex; align-items: center; gap: 6px;
@@ -276,11 +213,6 @@
       border-color: var(--purple-light);
       background: rgba(124,58,237,0.2);
       color: var(--purple-xlight);
-    }
-    .lb-shortcut {
-      font-size: 10px; opacity: 0.55;
-      background: rgba(255,255,255,0.06);
-      border-radius: 4px; padding: 1px 5px;
     }
 
     /* ── LEADERBOARD ── */
@@ -302,7 +234,7 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,58,237,0.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     }
     .lb-header {
       padding: 14px 18px 12px;
@@ -453,7 +385,7 @@
     }
     .example-row { font-family: 'Fira Code', monospace; font-size: 12px; margin-bottom: 4px; }
     .example-key { color: var(--muted); }
-    .example-val { color: var(--text); }
+    .example-val { color: var(--text); white-space: pre-wrap; }
     .example-explain { font-size: 11.5px; color: var(--text-dim); margin-top: 8px; line-height: 1.5; }
 
     .constraints-list { list-style: none; padding: 0; }
@@ -508,16 +440,29 @@
 
     .editor-actions { display: flex; gap: 8px; align-items: center; }
 
+    /* Submit is now the primary action button */
     .btn-submit {
-      padding: 5px 14px;
-      background: linear-gradient(135deg, var(--purple), #4f46e5);
-      border: none; border-radius: 7px;
-      color: #fff; font-family: 'Fira Code', monospace;
-      font-size: 12px; font-weight: 600; cursor: pointer;
-      box-shadow: 0 0 12px var(--purple-glow);
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 20px;
+      background: linear-gradient(135deg, var(--purple) 0%, #4f46e5 100%);
+      border: none; border-radius: 9px;
+      color: #fff;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 16px var(--purple-glow);
       transition: transform 0.15s, box-shadow 0.15s;
+      position: relative; overflow: hidden;
     }
-    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 18px var(--purple-glow); }
+    .btn-submit::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 60%);
+      pointer-events: none;
+    }
+    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 24px var(--purple-glow); }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     .code-editor-wrap { flex: 1; position: relative; overflow: hidden; }
 
@@ -586,17 +531,13 @@
 <div class="bg-grid"></div>
 <div class="bg-glow"></div>
 
-<!-- ══════════════════════════════════
-     WAITING ROOM BANNER
-══════════════════════════════════ -->
+<!-- WAITING ROOM BANNER -->
 <div class="waiting-banner" id="waitingBanner">
   <div class="waiting-box">
     <div class="waiting-icon">⏳</div>
     <div class="waiting-title">Waiting for players</div>
     <div class="waiting-sub">Share this code with your friend to join</div>
-
-    <!-- Copyable room code -->
-    <div class="waiting-room-code-block" onclick="copyRoomCode(true)">
+    <div class="waiting-room-code-block" onclick="copyRoomCode()">
       <span class="waiting-room-code-val" id="waitingRoomCodeDisplay">------</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa"
         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -605,7 +546,6 @@
       </svg>
       <div class="copy-toast-banner" id="copyToastBanner">Copied!</div>
     </div>
-
     <div class="waiting-copy-hint">click to copy · share with friends</div>
     <div class="waiting-countdown" id="waitingCountdown">0:00</div>
     <div class="waiting-players">
@@ -630,30 +570,14 @@
       <option value="cpp">C++17</option>
       <option value="java">Java 17</option>
     </select>
-    <button class="btn-run" id="runBtn" onclick="runCode()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
-      Run
-      <span class="shortcut">Ctrl+↵</span>
-    </button>
   </div>
 
   <div class="topbar-right">
-    <!-- Copyable room code in topbar -->
-    <div class="room-code-wrap" onclick="copyRoomCode(false)" title="Click to copy room code">
-      <span class="room-code-label">Room</span>
-      <span class="room-code-val" id="roomCodeDisplay">------</span>
-      <svg class="copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2v1"/>
-      </svg>
-      <div class="copy-toast" id="copyToast">Copied!</div>
-    </div>
-
     <div class="lb-toggle-btn" id="lbToggleBtn" onclick="toggleLeaderboard()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
       </svg>
       Leaderboard
-      <span class="lb-shortcut">Ctrl+L</span>
     </div>
   </div>
 </div>
@@ -678,11 +602,11 @@
       <span class="problem-badge badge-medium" id="problemBadge">—</span>
       <span class="problem-num" id="problemNum">#1</span>
       <div class="problem-nav">
-        <div class="nav-btn disabled" id="prevBtn" onclick="navigateProblem(-1)" title="Previous problem">
+        <div class="nav-btn disabled" id="prevBtn" onclick="navigateProblem(-1)">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </div>
         <span class="problem-progress" id="problemProgress">— / —</span>
-        <div class="nav-btn disabled" id="nextBtn" onclick="navigateProblem(1)" title="Next problem">
+        <div class="nav-btn disabled" id="nextBtn" onclick="navigateProblem(1)">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
@@ -705,14 +629,16 @@
     <div class="editor-topbar">
       <div class="editor-tabs">
         <div class="editor-tab active" id="activeTab">solution.py</div>
-        <div class="editor-tab" onclick="switchTab(this,'testcase')">testcase</div>
       </div>
       <div class="editor-actions">
-        <button class="btn-submit" onclick="submitCode()">Submit →</button>
+        <button class="btn-submit" id="submitBtn" onclick="submitCode()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
+          Submit
+        </button>
       </div>
     </div>
 
-    <div class="code-editor-wrap" id="codeWrap">
+    <div class="code-editor-wrap">
       <div class="line-numbers" id="lineNumbers"><div class="line-num">1</div></div>
       <textarea class="code-textarea" id="codeEditor" spellcheck="false" autocorrect="off" autocapitalize="off"
         oninput="updateLineNumbers()" onscroll="syncScroll()"
@@ -722,7 +648,7 @@
     <div class="output-pane" id="outputPane">
       <div class="output-header">
         <div class="output-title">
-          Output
+          Result
           <span class="output-status" id="outputStatus"></span>
         </div>
         <span class="output-close" onclick="closeOutput()">×</span>
@@ -735,73 +661,84 @@
 
 <script>
   /* ════════════════════════════════════════════════
-     ROOM CODE — read from URL ?room=XXXXXX
+     ROOM CODE
   ════════════════════════════════════════════════ */
   const ROOM_CODE = new URLSearchParams(window.location.search).get('room') || '';
-  if (!ROOM_CODE) {
-    window.location.href = '/';
-  }
-  document.getElementById('roomCodeDisplay').textContent      = ROOM_CODE;
+  if (!ROOM_CODE) window.location.href = '/';
   document.getElementById('waitingRoomCodeDisplay').textContent = ROOM_CODE;
 
   /* ════════════════════════════════════════════════
      STATE
   ════════════════════════════════════════════════ */
-  let allProblems          = [];
-  let currentProblemIndex  = 0;
-  let contestTimerSecs     = 0;
+  let allProblems         = [];
+  let currentProblemIndex = 0;
+  let contestTimerSecs    = 0;
   let contestTimerInterval = null;
   let waitingInterval      = null;
-  let isInWaitingPhase     = true;
 
   /* ════════════════════════════════════════════════
-     FETCH PROBLEMS
+     FETCH PROBLEMS + TIMING FROM SERVER
   ════════════════════════════════════════════════ */
   async function fetchAllProblems() {
     try {
-      const res = await fetch(`/problems?room=${ROOM_CODE}`);
+      const res  = await fetch(`/problems?room=${ROOM_CODE}`);
       if (!res.ok) throw new Error('fetch failed');
       const data = await res.json();
       if (!data.success) throw new Error(data.error || 'fetch failed');
-      allProblems      = data.problems;
-      contestTimerSecs = data.contestDuration;
+
+      allProblems              = data.problems;
+      window._contestDuration  = data.contestDuration;
+      window._contestStartTime = data.contestStartTime;
+
     } catch(e) {
-      console.warn('[contest] Problem fetch failed, using demo data:', e.message);
-      allProblems      = DEMO_PROBLEMS;
-      contestTimerSecs = 3600;
+      console.warn('[contest] Problem fetch failed:', e.message);
+      allProblems              = [];
+      window._contestDuration  = 3600;
+      window._contestStartTime = Date.now();
     }
 
     currentProblemIndex = 0;
-    renderProblem(allProblems[0]);
+    if (allProblems.length > 0) {
+      renderProblem(allProblems[0]);
+    }
     updateNavButtons();
     startPhaseLogic();
   }
 
   /* ════════════════════════════════════════════════
-     PHASE LOGIC
+     PHASE LOGIC — uses server contestStartTime
+     so timer is correct even after refresh
   ════════════════════════════════════════════════ */
   function startPhaseLogic() {
-    const stored    = sessionStorage.getItem(`waitingTimeLeft_${ROOM_CODE}`);
-    const waitingMs = stored ? parseInt(stored) : 0;
+    const now              = Date.now();
+    const contestStartTime = window._contestStartTime;
+    const contestEndTime   = contestStartTime + (window._contestDuration * 1000);
 
-    if (waitingMs > 0) {
-      showWaitingBanner(waitingMs);
-    } else {
+    if (now < contestStartTime) {
+      // still in waiting phase
+      showWaitingBanner(contestStartTime - now);
+    } else if (now < contestEndTime) {
+      // contest running — calculate real remaining seconds
+      contestTimerSecs = Math.floor((contestEndTime - now) / 1000);
       startContest();
+    } else {
+      // already ended
+      onContestEnd();
     }
   }
 
   /* ── Waiting phase ── */
   function showWaitingBanner(waitingMs) {
-    isInWaitingPhase = true;
     document.getElementById('waitingBanner').classList.add('show');
-
     let remainingMs = waitingMs;
 
     function tick() {
       if (remainingMs <= 0) {
         clearInterval(waitingInterval);
-        hideWaitingBanner();
+        document.getElementById('waitingBanner').classList.remove('show');
+        // recalculate real remaining contest time at the moment contest starts
+        const contestEndTime = window._contestStartTime + (window._contestDuration * 1000);
+        contestTimerSecs = Math.floor((contestEndTime - Date.now()) / 1000);
         startContest();
         return;
       }
@@ -815,18 +752,11 @@
 
     tick();
     waitingInterval = setInterval(tick, 1000);
-    sessionStorage.removeItem(`waitingTimeLeft_${ROOM_CODE}`);
-  }
-
-  function hideWaitingBanner() {
-    isInWaitingPhase = false;
-    document.getElementById('waitingBanner').classList.remove('show');
   }
 
   /* ── Contest phase ── */
   function startContest() {
-    isInWaitingPhase = false;
-    hideWaitingBanner();
+    document.getElementById('waitingBanner').classList.remove('show');
 
     function tick() {
       if (contestTimerSecs <= 0) {
@@ -841,9 +771,9 @@
       const s  = String(contestTimerSecs % 60).padStart(2,'0');
       const el = document.getElementById('timerVal');
       el.textContent = `${h}:${m}:${s}`;
-      if (contestTimerSecs < 300)      el.style.color = 'var(--hard)';
-      else if (contestTimerSecs < 900) el.style.color = 'var(--medium)';
-      else                             el.style.color = 'var(--purple-xlight)';
+      if      (contestTimerSecs < 300)  el.style.color = 'var(--hard)';
+      else if (contestTimerSecs < 900)  el.style.color = 'var(--medium)';
+      else                              el.style.color = 'var(--purple-xlight)';
     }
 
     tick();
@@ -851,18 +781,16 @@
   }
 
   function onContestEnd() {
-    document.getElementById('timerVal').style.color    = 'var(--hard)';
-    document.getElementById('timerVal').textContent    = 'ENDED';
+    document.getElementById('timerVal').style.color = 'var(--hard)';
+    document.getElementById('timerVal').textContent = 'ENDED';
+    document.getElementById('submitBtn').disabled   = true;
   }
 
   /* ════════════════════════════════════════════════
-     COPY ROOM CODE
-     fromBanner = true  → show toast on waiting box
-     fromBanner = false → show toast on topbar
+     COPY ROOM CODE (waiting banner only)
   ════════════════════════════════════════════════ */
-  function copyRoomCode(fromBanner) {
+  function copyRoomCode() {
     navigator.clipboard.writeText(ROOM_CODE).catch(() => {
-      // fallback for browsers that block clipboard
       const ta = document.createElement('textarea');
       ta.value = ROOM_CODE;
       document.body.appendChild(ta);
@@ -870,16 +798,9 @@
       document.execCommand('copy');
       document.body.removeChild(ta);
     });
-
-    if (fromBanner) {
-      const t = document.getElementById('copyToastBanner');
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 1600);
-    } else {
-      const t = document.getElementById('copyToast');
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 1600);
-    }
+    const t = document.getElementById('copyToastBanner');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1600);
   }
 
   /* ════════════════════════════════════════════════
@@ -889,7 +810,6 @@
     const next = currentProblemIndex + dir;
     if (next < 0 || next >= allProblems.length) return;
     currentProblemIndex = next;
-
     const content = document.getElementById('problemContent');
     content.style.opacity    = '0';
     content.style.transition = 'opacity 0.18s ease';
@@ -897,7 +817,6 @@
       renderProblem(allProblems[currentProblemIndex]);
       content.style.opacity = '1';
     }, 180);
-
     updateNavButtons();
     document.getElementById('codeEditor').value = '';
     updateLineNumbers();
@@ -907,7 +826,8 @@
     const total = allProblems.length;
     document.getElementById('prevBtn').classList.toggle('disabled', currentProblemIndex === 0);
     document.getElementById('nextBtn').classList.toggle('disabled', currentProblemIndex === total - 1);
-    document.getElementById('problemProgress').textContent = `${currentProblemIndex + 1} / ${total}`;
+    document.getElementById('problemProgress').textContent =
+      total > 0 ? `${currentProblemIndex + 1} / ${total}` : '— / —';
   }
 
   function renderProblem(data) {
@@ -921,64 +841,134 @@
     html += `<div class="problem-section-label">Description</div>`;
     html += `<div class="problem-desc">${data.description.replace(/\n/g,'<br/>')}</div>`;
 
-    html += `<div class="problem-section-label">Examples</div>`;
-    data.examples.forEach((ex, i) => {
-      html += `<div class="example-block">
-        <div class="example-label">Example ${i+1}</div>
-        <div class="example-row"><span class="example-key">Input: </span><span class="example-val">${ex.input}</span></div>
-        <div class="example-row"><span class="example-key">Output: </span><span class="example-val">${ex.output}</span></div>
-        ${ex.explanation ? `<div class="example-explain">${ex.explanation}</div>` : ''}
-      </div>`;
-    });
+    if (data.examples && data.examples.length > 0) {
+      html += `<div class="problem-section-label">Examples</div>`;
+      data.examples.forEach((ex, i) => {
+        html += `<div class="example-block">
+          <div class="example-label">Example ${i + 1}</div>
+          <div class="example-row"><span class="example-key">Input: </span><span class="example-val">${ex.input ?? ''}</span></div>
+          <div class="example-row"><span class="example-key">Output: </span><span class="example-val">${ex.output ?? ''}</span></div>
+          ${ex.explanation ? `<div class="example-explain">${ex.explanation}</div>` : ''}
+        </div>`;
+      });
+    }
 
-    html += `<div class="problem-section-label">Constraints</div>`;
-    html += `<ul class="constraints-list">`;
-    data.constraints.forEach(c => { html += `<li>${c}</li>`; });
-    html += `</ul><div style="height:32px"></div>`;
+    if (data.constraints && data.constraints.length > 0) {
+      html += `<div class="problem-section-label">Constraints</div>`;
+      html += `<ul class="constraints-list">`;
+      data.constraints.forEach(c => { html += `<li>${c}</li>`; });
+      html += `</ul>`;
+    }
 
+    html += `<div style="height:32px"></div>`;
     document.getElementById('problemContent').innerHTML = html;
 
     const lang   = document.getElementById('langSelect').value;
     const editor = document.getElementById('codeEditor');
-    editor.value = data.snippets?.[lang] || `// Solution for: ${data.title}\n`;
+    editor.value = data.snippets?.[lang] || '';
     updateLineNumbers();
   }
 
   /* ════════════════════════════════════════════════
      LEADERBOARD
   ════════════════════════════════════════════════ */
-  const MOCK_LEADERBOARD = [
-    { name: 'you',         score: 1480, solved: 2, avatar: '#7c3aed', me: true },
-    { name: 'ninja_coder', score: 1920, solved: 3, avatar: '#0ea5e9' },
-    { name: 'algomaster',  score: 1750, solved: 3, avatar: '#f59e0b' },
-    { name: 'bytewizard',  score: 1650, solved: 2, avatar: '#10b981' },
-  ];
-
-  function renderLeaderboard() {
-    const sorted = [...MOCK_LEADERBOARD].sort((a,b) => b.score - a.score);
-    document.getElementById('lbCount').textContent = `${sorted.length} participants`;
-    const list = document.getElementById('lbList');
-    list.innerHTML = sorted.map((p, i) => {
-      const rank    = i + 1;
-      const rankCls = rank <= 3 ? `rank-${rank}` : 'rank-other';
-      const rankStr = rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank;
-      return `<div class="lb-item ${p.me ? 'me' : ''}">
-        <div class="lb-rank ${rankCls}">${rankStr}</div>
-        <div class="lb-avatar" style="background:${p.avatar}">${p.name[0].toUpperCase()}</div>
-        <div class="lb-user-info">
-          <div class="lb-username">${p.me ? p.name + ' (you)' : p.name}</div>
-          <div class="lb-solved">${p.solved} solved</div>
-        </div>
-        <div class="lb-score">${p.score}</div>
-      </div>`;
-    }).join('');
-  }
-
   let lbOpen = false;
   function toggleLeaderboard() {
     lbOpen = !lbOpen;
     document.getElementById('lbDropdown').classList.toggle('open', lbOpen);
     document.getElementById('lbToggleBtn').classList.toggle('active', lbOpen);
+  }
+
+  document.addEventListener('click', e => {
+    if (!lbOpen) return;
+    const lb  = document.getElementById('lbDropdown');
+    const btn = document.getElementById('lbToggleBtn');
+    if (!lb.contains(e.target) && !btn.contains(e.target)) {
+      lbOpen = false;
+      lb.classList.remove('open');
+      btn.classList.remove('active');
+    }
+  });
+
+  /* ════════════════════════════════════════════════
+     SUBMIT CODE — real POST to /submit
+  ════════════════════════════════════════════════ */
+  async function submitCode() {
+    const code = document.getElementById('codeEditor').value.trim();
+    const lang = document.getElementById('langSelect').value;
+    const btn  = document.getElementById('submitBtn');
+
+    if (!code) return;
+
+    document.getElementById('outputPane').classList.add('open');
+    const statusEl = document.getElementById('outputStatus');
+    const bodyEl   = document.getElementById('outputBody');
+
+    statusEl.className   = 'output-status status-running';
+    statusEl.textContent = 'Submitting...';
+    bodyEl.innerHTML     = '<span class="out-info">⏳ Running against test cases...</span>';
+
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/submit', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code,
+          language: lang,
+          room:     ROOM_CODE,
+          problem:  allProblems[currentProblemIndex]?.number,
+        })
+      });
+
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const data = await res.json();
+      renderOutput(data);
+
+    } catch(e) {
+      statusEl.className   = 'output-status status-error';
+      statusEl.textContent = 'Error';
+      bodyEl.innerHTML     = `<span class="out-fail">⚠ ${e.message}</span>`;
+    }
+
+    btn.disabled = false;
+  }
+
+  function renderOutput(data) {
+    const statusEl = document.getElementById('outputStatus');
+    const bodyEl   = document.getElementById('outputBody');
+    const allPass  = data.passed === data.total;
+
+    statusEl.className   = `output-status ${allPass ? 'status-accepted' : 'status-error'}`;
+    statusEl.textContent = allPass
+      ? `✓ Accepted (${data.passed}/${data.total})`
+      : `✗ Wrong Answer (${data.passed}/${data.total})`;
+
+    let html = '';
+    if (data.runtime || data.memory) {
+      html += `<div style="margin-bottom:10px;color:var(--text-dim)">
+        Runtime: <span style="color:var(--purple-xlight)">${data.runtime || '—'}</span>
+        &nbsp;|&nbsp;
+        Memory: <span style="color:var(--purple-xlight)">${data.memory || '—'}</span>
+      </div>`;
+    }
+
+    (data.results || []).forEach(r => {
+      html += `<div style="margin-bottom:6px">
+        <span class="${r.pass ? 'out-pass' : 'out-fail'}">${r.pass ? '✓' : '✗'} Test ${r.test}</span>
+        <span style="color:var(--muted);font-size:11px;margin-left:8px">
+          Input: ${r.input} → Expected: ${r.expected}
+          ${!r.pass ? ` · Got: <span class="out-fail">${r.got}</span>` : ''}
+        </span>
+      </div>`;
+    });
+
+    bodyEl.innerHTML = html || '<span class="out-info">No output returned.</span>';
+  }
+
+  function closeOutput() {
+    document.getElementById('outputPane').classList.remove('open');
   }
 
   /* ════════════════════════════════════════════════
@@ -1002,7 +992,7 @@
     if (e.key === 'Tab') {
       e.preventDefault();
       const s = this.selectionStart, end = this.selectionEnd;
-      this.value = this.value.substring(0,s) + '    ' + this.value.substring(end);
+      this.value = this.value.substring(0, s) + '    ' + this.value.substring(end);
       this.selectionStart = this.selectionEnd = s + 4;
       updateLineNumbers();
     }
@@ -1011,132 +1001,12 @@
   document.getElementById('langSelect').addEventListener('change', function() {
     const ext = { cpp:'cpp', java:'java', python:'py' };
     document.getElementById('activeTab').textContent = `solution.${ext[this.value] || 'txt'}`;
-    if (allProblems[currentProblemIndex]) {
-      const snippets = allProblems[currentProblemIndex].snippets;
-      if (snippets) {
-        document.getElementById('codeEditor').value = snippets[this.value] || '';
-        updateLineNumbers();
-      }
+    const p = allProblems[currentProblemIndex];
+    if (p?.snippets) {
+      document.getElementById('codeEditor').value = p.snippets[this.value] || '';
+      updateLineNumbers();
     }
   });
-
-  /* ════════════════════════════════════════════════
-     TABS
-  ════════════════════════════════════════════════ */
-  function switchTab(el, type) {
-    document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    const ta = document.getElementById('codeEditor');
-    if (type === 'testcase') {
-      ta.value = `# Custom test case\n# Input:\n\n# Expected Output:\n`;
-    } else {
-      const lang = document.getElementById('langSelect').value;
-      const p    = allProblems[currentProblemIndex];
-      ta.value   = p?.snippets?.[lang] || '';
-    }
-    updateLineNumbers();
-  }
-
-  /* ════════════════════════════════════════════════
-     RUN CODE
-  ════════════════════════════════════════════════ */
-  async function runCode() {
-    const code = document.getElementById('codeEditor').value;
-    const lang = document.getElementById('langSelect').value;
-    const btn  = document.getElementById('runBtn');
-
-    document.getElementById('outputPane').classList.add('open');
-    const statusEl = document.getElementById('outputStatus');
-    const bodyEl   = document.getElementById('outputBody');
-
-    statusEl.className   = 'output-status status-running';
-    statusEl.textContent = 'Running...';
-    bodyEl.innerHTML     = '<span class="out-info">⏳ Executing against test cases...</span>';
-
-    btn.disabled      = true;
-    btn.style.opacity = '0.7';
-
-    try {
-      const res = await fetch('/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          code,
-          language: lang,
-          room:     ROOM_CODE,
-          problem:  allProblems[currentProblemIndex]?.number
-        })
-      });
-      if (!res.ok) throw new Error('Server error');
-      const data = await res.json();
-      renderOutput(data);
-    } catch(e) {
-      renderOutput({
-        status: 'accepted', passed: 2, total: 2,
-        runtime: '48ms', memory: '16.8MB',
-        results: [
-          { test: 1, input: 'sample input 1', expected: 'expected 1', got: 'expected 1', pass: true },
-          { test: 2, input: 'sample input 2', expected: 'expected 2', got: 'expected 2', pass: true },
-        ]
-      });
-    }
-
-    btn.disabled      = false;
-    btn.style.opacity = '1';
-  }
-
-  function renderOutput(data) {
-    const statusEl = document.getElementById('outputStatus');
-    const bodyEl   = document.getElementById('outputBody');
-    const allPass  = data.passed === data.total;
-
-    statusEl.className   = `output-status ${allPass ? 'status-accepted' : 'status-error'}`;
-    statusEl.textContent = allPass
-      ? `✓ Accepted (${data.passed}/${data.total})`
-      : `✗ Wrong Answer (${data.passed}/${data.total})`;
-
-    let html = `<div style="margin-bottom:10px;color:var(--text-dim)">
-      Runtime: <span style="color:var(--purple-xlight)">${data.runtime || '—'}</span> &nbsp;|&nbsp;
-      Memory: <span style="color:var(--purple-xlight)">${data.memory || '—'}</span>
-    </div>`;
-
-    (data.results || []).forEach(r => {
-      html += `<div style="margin-bottom:6px">
-        <span class="${r.pass ? 'out-pass' : 'out-fail'}">${r.pass ? '✓' : '✗'} Test ${r.test}</span>
-        <span style="color:var(--muted);font-size:11px;margin-left:8px">
-          Input: ${r.input} → Expected: ${r.expected}
-          ${!r.pass ? ` · Got: <span class="out-fail">${r.got}</span>` : ''}
-        </span>
-      </div>`;
-    });
-
-    bodyEl.innerHTML = html;
-  }
-
-  function closeOutput() {
-    document.getElementById('outputPane').classList.remove('open');
-  }
-
-  /* ════════════════════════════════════════════════
-     SUBMIT CODE
-  ════════════════════════════════════════════════ */
-  async function submitCode() {
-    const code = document.getElementById('codeEditor').value;
-    const lang = document.getElementById('langSelect').value;
-    try {
-      await fetch('/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          code,
-          language: lang,
-          room:     ROOM_CODE,
-          problem:  allProblems[currentProblemIndex]?.number
-        })
-      });
-    } catch(e) {}
-    runCode();
-  }
 
   /* ════════════════════════════════════════════════
      DRAGGABLE DIVIDER
@@ -1152,14 +1022,12 @@
     document.body.style.cursor     = 'col-resize';
     document.body.style.userSelect = 'none';
   });
-
   document.addEventListener('mousemove', e => {
     if (!dragging) return;
     let newW = startW + (e.clientX - startX);
     newW = Math.max(220, Math.min(container.offsetWidth - 280, newW));
     paneLeft.style.width = newW + 'px';
   });
-
   document.addEventListener('mouseup', () => {
     if (!dragging) return;
     dragging = false;
@@ -1169,46 +1037,9 @@
   });
 
   /* ════════════════════════════════════════════════
-     KEYBOARD SHORTCUTS
-  ════════════════════════════════════════════════ */
-  document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runCode(); }
-    if ((e.ctrlKey || e.metaKey) && e.key === 'l')     { e.preventDefault(); toggleLeaderboard(); }
-  });
-
-  document.addEventListener('click', e => {
-    if (!lbOpen) return;
-    const lb  = document.getElementById('lbDropdown');
-    const btn = document.getElementById('lbToggleBtn');
-    if (!lb.contains(e.target) && !btn.contains(e.target)) {
-      lbOpen = false;
-      lb.classList.remove('open');
-      btn.classList.remove('active');
-    }
-  });
-
-  /* ════════════════════════════════════════════════
-     DEMO PROBLEMS (fallback if /problems fails)
-  ════════════════════════════════════════════════ */
-  const DEMO_PROBLEMS = [
-    {
-      number: 1, difficulty: 'easy', title: 'Two Sum',
-      description: `Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to target.`,
-      examples: [{ input: 'nums = [2,7,11,15], target = 9', output: '[0,1]', explanation: 'nums[0] + nums[1] == 9' }],
-      constraints: ['2 ≤ nums.length ≤ 10⁴', '-10⁹ ≤ nums[i] ≤ 10⁹', 'Only one valid answer exists'],
-      snippets: {
-        python: `class Solution:\n    def twoSum(self, nums, target):\n        pass\n`,
-        cpp:    `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n    }\n};\n`,
-        java:   `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        return new int[]{};\n    }\n}\n`
-      }
-    }
-  ];
-
-  /* ════════════════════════════════════════════════
      INIT
   ════════════════════════════════════════════════ */
   fetchAllProblems();
-  renderLeaderboard();
   updateLineNumbers();
 </script>
 </body>
