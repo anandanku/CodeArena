@@ -39,7 +39,6 @@
       color: var(--text);
     }
 
-    /* ── BG ── */
     .bg-grid {
       position: fixed; inset: 0; z-index: 0;
       background-image:
@@ -66,11 +65,7 @@
       gap: 12px;
     }
 
-    /* Left */
-    .topbar-left {
-      display: flex; align-items: center; gap: 10px;
-      flex: 1;
-    }
+    .topbar-left { display: flex; align-items: center; gap: 10px; flex: 1; }
 
     .logo-box {
       width: 32px; height: 32px;
@@ -83,26 +78,59 @@
       flex-shrink: 0;
     }
 
-    .contest-meta {
-      display: flex; flex-direction: column;
-    }
+    .contest-meta { display: flex; flex-direction: column; }
 
     .contest-name {
       font-family: 'Fira Code', monospace;
       font-size: 12px; font-weight: 600;
-      color: var(--purple-light);
-      line-height: 1;
+      color: var(--purple-light); line-height: 1;
     }
 
     .contest-timer {
       font-family: 'Fira Code', monospace;
-      font-size: 11px; color: var(--text-dim);
-      margin-top: 2px;
+      font-size: 11px; color: var(--text-dim); margin-top: 2px;
     }
 
     .timer-val { color: var(--purple-xlight); font-weight: 600; }
 
-    /* Center */
+    /* Waiting banner */
+    .waiting-banner {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(12px);
+      align-items: center; justify-content: center;
+    }
+    .waiting-banner.show { display: flex; }
+    .waiting-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      text-align: center;
+      width: 360px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    }
+    .waiting-icon { font-size: 40px; margin-bottom: 14px; }
+    .waiting-title {
+      font-family: 'Fira Code', monospace;
+      font-size: 20px; font-weight: 700;
+      color: #f1f5f9; margin-bottom: 8px;
+    }
+    .waiting-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; }
+    .waiting-countdown {
+      font-family: 'Fira Code', monospace;
+      font-size: 48px; font-weight: 700;
+      color: var(--purple-xlight);
+      text-shadow: 0 0 30px var(--purple-glow);
+      margin-bottom: 16px;
+    }
+    .waiting-players {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px; color: var(--muted);
+    }
+    .waiting-players span { color: var(--green); }
+
     .topbar-center {
       display: flex; align-items: center; gap: 10px;
       position: absolute; left: 50%; transform: translateX(-50%);
@@ -116,8 +144,7 @@
       font-family: 'Fira Code', monospace;
       font-size: 12px;
       padding: 5px 10px;
-      cursor: pointer;
-      outline: none;
+      cursor: pointer; outline: none;
       transition: border-color 0.2s;
     }
     .lang-select:hover, .lang-select:focus { border-color: var(--purple-light); color: var(--text); }
@@ -150,13 +177,11 @@
       border-radius: 4px; padding: 1px 5px;
     }
 
-    /* Right */
     .topbar-right {
       display: flex; align-items: center; gap: 10px;
       flex: 1; justify-content: flex-end;
     }
 
-    /* Room code */
     .room-code-wrap {
       display: flex; align-items: center; gap: 6px;
       background: rgba(124,58,237,0.1);
@@ -176,8 +201,7 @@
     .room-code-val {
       font-family: 'Fira Code', monospace;
       font-size: 13px; font-weight: 700;
-      color: var(--purple-xlight);
-      letter-spacing: 2px;
+      color: var(--purple-xlight); letter-spacing: 2px;
     }
     .copy-icon { color: var(--muted); transition: color 0.2s; flex-shrink: 0; }
     .room-code-wrap:hover .copy-icon { color: var(--purple-light); }
@@ -191,7 +215,6 @@
     }
     .copy-toast.show { opacity: 1; }
 
-    /* Leaderboard toggle btn */
     .lb-toggle-btn {
       display: flex; align-items: center; gap: 6px;
       padding: 6px 12px;
@@ -216,7 +239,7 @@
       border-radius: 4px; padding: 1px 5px;
     }
 
-    /* ── LEADERBOARD DROPDOWN ── */
+    /* ── LEADERBOARD ── */
     .lb-dropdown {
       position: absolute;
       top: calc(var(--topbar-h) + 8px);
@@ -229,10 +252,7 @@
       opacity: 0;
       border-radius: 16px;
     }
-    .lb-dropdown.open {
-      max-height: 420px;
-      opacity: 1;
-    }
+    .lb-dropdown.open { max-height: 420px; opacity: 1; }
     .lb-inner {
       background: var(--surface2);
       border: 1px solid var(--border);
@@ -252,8 +272,7 @@
     }
     .lb-live-dot {
       width: 7px; height: 7px;
-      background: var(--green);
-      border-radius: 50%;
+      background: var(--green); border-radius: 50%;
       box-shadow: 0 0 8px var(--green-glow);
       animation: pulse 2s infinite;
     }
@@ -261,22 +280,14 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.5; transform: scale(0.8); }
     }
-    .lb-count {
-      font-family: 'Fira Code', monospace;
-      font-size: 10px; color: var(--muted);
-    }
-    .lb-list {
-      max-height: 340px;
-      overflow-y: auto;
-      padding: 8px 0;
-    }
+    .lb-count { font-family: 'Fira Code', monospace; font-size: 10px; color: var(--muted); }
+    .lb-list { max-height: 340px; overflow-y: auto; padding: 8px 0; }
     .lb-list::-webkit-scrollbar { width: 4px; }
     .lb-list::-webkit-scrollbar-track { background: transparent; }
     .lb-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
     .lb-item {
       display: flex; align-items: center; gap: 12px;
-      padding: 9px 18px;
-      transition: background 0.15s;
+      padding: 9px 18px; transition: background 0.15s;
     }
     .lb-item:hover { background: rgba(124,58,237,0.06); }
     .lb-item.me { background: rgba(124,58,237,0.1); }
@@ -292,8 +303,7 @@
     .lb-avatar {
       width: 28px; height: 28px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 600; color: #fff;
-      flex-shrink: 0;
+      font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0;
     }
     .lb-user-info { flex: 1; min-width: 0; }
     .lb-username {
@@ -302,14 +312,10 @@
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .lb-item.me .lb-username { color: var(--purple-xlight); }
-    .lb-solved {
-      font-size: 10px; color: var(--text-dim); margin-top: 1px;
-    }
+    .lb-solved { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
     .lb-score {
       font-family: 'Fira Code', monospace;
-      font-size: 13px; font-weight: 700;
-      color: var(--purple-light);
-      flex-shrink: 0;
+      font-size: 13px; font-weight: 700; color: var(--purple-light); flex-shrink: 0;
     }
     .lb-item.me .lb-score { color: var(--green); }
 
@@ -321,70 +327,47 @@
       overflow: hidden;
     }
 
-    /* ── LEFT PANE — Problem ── */
     .pane-problem {
       display: flex; flex-direction: column;
-      overflow: hidden;
-      min-width: 280px;
-      background: var(--surface);
-      flex-shrink: 0;
+      overflow: hidden; min-width: 280px;
+      background: var(--surface); flex-shrink: 0;
     }
 
     .pane-problem-header {
       padding: 14px 20px 12px;
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 10px;
-      flex-shrink: 0;
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
 
     .problem-badge {
       font-family: 'Fira Code', monospace;
       font-size: 10px; font-weight: 600;
-      padding: 3px 9px; border-radius: 20px;
-      letter-spacing: 0.5px;
+      padding: 3px 9px; border-radius: 20px; letter-spacing: 0.5px;
     }
     .badge-easy   { background: rgba(16,185,129,0.15); color: var(--easy); border: 1px solid rgba(16,185,129,0.3); }
     .badge-medium { background: rgba(245,158,11,0.15); color: var(--medium); border: 1px solid rgba(245,158,11,0.3); }
     .badge-hard   { background: rgba(239,68,68,0.15); color: var(--hard); border: 1px solid rgba(239,68,68,0.3); }
 
-    .problem-num {
-      font-family: 'Fira Code', monospace;
-      font-size: 11px; color: var(--muted);
-    }
+    .problem-num { font-family: 'Fira Code', monospace; font-size: 11px; color: var(--muted); }
 
-    /* ── PROBLEM NAV BUTTONS ── */
-    .problem-nav {
-      display: flex; align-items: center; gap: 4px;
-      margin-left: auto;
-    }
+    .problem-nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
     .nav-btn {
       width: 26px; height: 26px;
       display: flex; align-items: center; justify-content: center;
       background: rgba(124,58,237,0.08);
       border: 1px solid var(--border);
-      border-radius: 7px;
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: all 0.18s ease;
-      flex-shrink: 0;
-      user-select: none;
+      border-radius: 7px; color: var(--text-dim);
+      cursor: pointer; transition: all 0.18s ease; flex-shrink: 0; user-select: none;
     }
-    .nav-btn:hover:not(.disabled) {
-      background: rgba(124,58,237,0.2);
-      border-color: var(--purple-light);
-      color: var(--purple-xlight);
-    }
+    .nav-btn:hover:not(.disabled) { background: rgba(124,58,237,0.2); border-color: var(--purple-light); color: var(--purple-xlight); }
     .nav-btn.disabled { opacity: 0.28; cursor: not-allowed; }
     .problem-progress {
       font-family: 'Fira Code', monospace;
       font-size: 11px; color: var(--muted);
-      padding: 0 4px;
-      min-width: 36px; text-align: center;
+      padding: 0 4px; min-width: 36px; text-align: center;
     }
 
-    .pane-problem-scroll {
-      flex: 1; overflow-y: auto; padding: 20px;
-    }
+    .pane-problem-scroll { flex: 1; overflow-y: auto; padding: 20px; }
     .pane-problem-scroll::-webkit-scrollbar { width: 4px; }
     .pane-problem-scroll::-webkit-scrollbar-track { background: transparent; }
     .pane-problem-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -392,8 +375,7 @@
     .problem-title {
       font-family: 'Fira Code', monospace;
       font-size: 18px; font-weight: 700;
-      color: #f1f5f9; margin-bottom: 14px;
-      line-height: 1.3;
+      color: #f1f5f9; margin-bottom: 14px; line-height: 1.3;
     }
 
     .problem-section-label {
@@ -405,218 +387,130 @@
       display: flex; align-items: center; gap: 7px;
     }
     .problem-section-label::after {
-      content: '';
-      flex: 1; height: 1px;
-      background: var(--border);
+      content: ''; flex: 1; height: 1px; background: var(--border);
     }
 
-    .problem-desc {
-      font-size: 13.5px; color: var(--text-dim);
-      line-height: 1.75;
-    }
+    .problem-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.75; }
     .problem-desc code {
-      font-family: 'Fira Code', monospace;
-      font-size: 12px;
-      background: rgba(124,58,237,0.15);
-      border: 1px solid rgba(124,58,237,0.25);
-      border-radius: 4px;
-      padding: 1px 6px;
-      color: var(--purple-xlight);
+      font-family: 'Fira Code', monospace; font-size: 12px;
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25);
+      border-radius: 4px; padding: 1px 6px; color: var(--purple-xlight);
     }
 
     .example-block {
       background: rgba(124,58,237,0.05);
       border: 1px solid var(--border);
       border-left: 3px solid var(--purple);
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
     }
     .example-label {
       font-family: 'Fira Code', monospace;
-      font-size: 10px; color: var(--purple-light);
-      margin-bottom: 8px; letter-spacing: 0.5px;
+      font-size: 10px; color: var(--purple-light); margin-bottom: 8px; letter-spacing: 0.5px;
     }
-    .example-row {
-      font-family: 'Fira Code', monospace;
-      font-size: 12px; margin-bottom: 4px;
-    }
+    .example-row { font-family: 'Fira Code', monospace; font-size: 12px; margin-bottom: 4px; }
     .example-key { color: var(--muted); }
     .example-val { color: var(--text); }
-    .example-explain {
-      font-size: 11.5px; color: var(--text-dim);
-      margin-top: 8px; line-height: 1.5;
-    }
+    .example-explain { font-size: 11.5px; color: var(--text-dim); margin-top: 8px; line-height: 1.5; }
 
-    .constraints-list {
-      list-style: none; padding: 0;
-    }
+    .constraints-list { list-style: none; padding: 0; }
     .constraints-list li {
       font-family: 'Fira Code', monospace;
       font-size: 12px; color: var(--text-dim);
-      padding: 5px 0;
-      border-bottom: 1px solid rgba(124,58,237,0.08);
+      padding: 5px 0; border-bottom: 1px solid rgba(124,58,237,0.08);
       display: flex; align-items: center; gap: 8px;
     }
-    .constraints-list li::before {
-      content: '▸';
-      color: var(--purple);
-      font-size: 10px;
-      flex-shrink: 0;
-    }
+    .constraints-list li::before { content: '▸'; color: var(--purple); font-size: 10px; flex-shrink: 0; }
 
-    /* Loading skeleton */
     .skeleton {
       background: linear-gradient(90deg, rgba(124,58,237,0.08) 25%, rgba(124,58,237,0.15) 50%, rgba(124,58,237,0.08) 75%);
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
-      border-radius: 6px;
-      height: 14px; margin-bottom: 8px;
+      border-radius: 6px; height: 14px; margin-bottom: 8px;
     }
-    @keyframes shimmer {
-      0%   { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-    /* ── DIVIDER (draggable) ── */
     .divider {
-      width: 5px;
-      background: var(--border);
-      cursor: col-resize;
-      flex-shrink: 0;
-      position: relative;
-      transition: background 0.2s;
-      z-index: 10;
+      width: 5px; background: var(--border); cursor: col-resize;
+      flex-shrink: 0; position: relative; transition: background 0.2s; z-index: 10;
     }
-    .divider:hover, .divider.dragging {
-      background: var(--purple);
-    }
+    .divider:hover, .divider.dragging { background: var(--purple); }
     .divider::after {
-      content: '';
-      position: absolute; top: 50%; left: 50%;
+      content: ''; position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 3px; height: 40px;
-      background: rgba(167,139,250,0.4);
-      border-radius: 3px;
+      width: 3px; height: 40px; background: rgba(167,139,250,0.4); border-radius: 3px;
     }
-    .divider:hover::after, .divider.dragging::after {
-      background: rgba(167,139,250,0.8);
-    }
+    .divider:hover::after, .divider.dragging::after { background: rgba(167,139,250,0.8); }
 
-    /* ── RIGHT PANE — Editor ── */
     .pane-editor {
-      flex: 1;
-      display: flex; flex-direction: column;
-      overflow: hidden;
-      min-width: 280px;
-      background: var(--surface2);
+      flex: 1; display: flex; flex-direction: column;
+      overflow: hidden; min-width: 280px; background: var(--surface2);
     }
 
     .editor-topbar {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 14px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(10,10,15,0.6);
-      flex-shrink: 0;
+      padding: 8px 14px; border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.6); flex-shrink: 0;
     }
 
-    .editor-tabs {
-      display: flex; gap: 4px;
-    }
+    .editor-tabs { display: flex; gap: 4px; }
 
     .editor-tab {
-      font-family: 'Fira Code', monospace;
-      font-size: 11px;
-      padding: 4px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      color: var(--muted);
-      transition: all 0.15s;
+      font-family: 'Fira Code', monospace; font-size: 11px;
+      padding: 4px 12px; border-radius: 6px; cursor: pointer;
+      border: 1px solid transparent; color: var(--muted); transition: all 0.15s;
     }
-    .editor-tab.active {
-      background: rgba(124,58,237,0.18);
-      border-color: var(--border);
-      color: var(--purple-xlight);
-    }
+    .editor-tab.active { background: rgba(124,58,237,0.18); border-color: var(--border); color: var(--purple-xlight); }
     .editor-tab:hover:not(.active) { color: var(--text-dim); background: rgba(255,255,255,0.03); }
 
-    .editor-actions {
-      display: flex; gap: 8px; align-items: center;
-    }
+    .editor-actions { display: flex; gap: 8px; align-items: center; }
 
     .btn-submit {
       padding: 5px 14px;
       background: linear-gradient(135deg, var(--purple), #4f46e5);
       border: none; border-radius: 7px;
-      color: #fff;
-      font-family: 'Fira Code', monospace;
-      font-size: 12px; font-weight: 600;
-      cursor: pointer;
+      color: #fff; font-family: 'Fira Code', monospace;
+      font-size: 12px; font-weight: 600; cursor: pointer;
       box-shadow: 0 0 12px var(--purple-glow);
       transition: transform 0.15s, box-shadow 0.15s;
     }
     .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 18px var(--purple-glow); }
 
-    /* Code area */
-    .code-editor-wrap {
-      flex: 1; position: relative; overflow: hidden;
-    }
+    .code-editor-wrap { flex: 1; position: relative; overflow: hidden; }
 
     .line-numbers {
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 44px;
-      background: rgba(0,0,0,0.2);
-      border-right: 1px solid var(--border);
-      padding: 14px 0;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 2;
+      position: absolute; left: 0; top: 0; bottom: 0; width: 44px;
+      background: rgba(0,0,0,0.2); border-right: 1px solid var(--border);
+      padding: 14px 0; overflow: hidden; pointer-events: none; z-index: 2;
     }
-
     .line-num {
-      font-family: 'Fira Code', monospace;
-      font-size: 12px; color: var(--muted);
-      text-align: right;
-      padding: 0 10px;
-      line-height: 21px;
-      user-select: none;
+      font-family: 'Fira Code', monospace; font-size: 12px; color: var(--muted);
+      text-align: right; padding: 0 10px; line-height: 21px; user-select: none;
     }
 
     .code-textarea {
       position: absolute; inset: 0;
       padding: 14px 14px 14px 58px;
-      background: transparent;
-      border: none; outline: none; resize: none;
-      color: var(--text);
-      font-family: 'Fira Code', monospace;
-      font-size: 13px; line-height: 21px;
-      tab-size: 4;
+      background: transparent; border: none; outline: none; resize: none;
+      color: var(--text); font-family: 'Fira Code', monospace;
+      font-size: 13px; line-height: 21px; tab-size: 4;
       width: 100%; height: 100%;
-      caret-color: var(--purple-light);
-      spellcheck: false;
+      caret-color: var(--purple-light); spellcheck: false;
     }
     .code-textarea::selection { background: rgba(124,58,237,0.3); }
 
-    /* Output pane */
     .output-pane {
-      height: 0;
-      border-top: 1px solid var(--border);
-      background: rgba(8,8,14,0.9);
-      overflow: hidden;
-      transition: height 0.35s cubic-bezier(0.4,0,0.2,1);
-      flex-shrink: 0;
+      height: 0; border-top: 1px solid var(--border);
+      background: rgba(8,8,14,0.9); overflow: hidden;
+      transition: height 0.35s cubic-bezier(0.4,0,0.2,1); flex-shrink: 0;
     }
     .output-pane.open { height: 200px; }
 
     .output-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--border);
+      padding: 8px 16px; border-bottom: 1px solid var(--border);
     }
     .output-title {
-      font-family: 'Fira Code', monospace;
-      font-size: 11px; color: var(--purple-light);
+      font-family: 'Fira Code', monospace; font-size: 11px; color: var(--purple-light);
       letter-spacing: 1px; text-transform: uppercase;
       display: flex; align-items: center; gap: 8px;
     }
@@ -628,21 +522,13 @@
     .status-accepted { background: rgba(16,185,129,0.15); color: var(--easy); border: 1px solid rgba(16,185,129,0.3); }
     .status-error { background: rgba(239,68,68,0.15); color: var(--hard); border: 1px solid rgba(239,68,68,0.3); }
 
-    .output-close {
-      cursor: pointer; color: var(--muted);
-      font-size: 16px; line-height: 1;
-      transition: color 0.15s;
-    }
+    .output-close { cursor: pointer; color: var(--muted); font-size: 16px; line-height: 1; transition: color 0.15s; }
     .output-close:hover { color: var(--text); }
 
     .output-body {
-      padding: 12px 16px;
-      font-family: 'Fira Code', monospace;
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.6;
-      height: calc(200px - 40px);
-      overflow-y: auto;
+      padding: 12px 16px; font-family: 'Fira Code', monospace;
+      font-size: 12px; color: var(--text-dim); line-height: 1.6;
+      height: calc(200px - 40px); overflow-y: auto;
     }
     .output-body::-webkit-scrollbar { width: 3px; }
     .output-body::-webkit-scrollbar-thumb { background: var(--border); }
@@ -656,18 +542,32 @@
 <div class="bg-grid"></div>
 <div class="bg-glow"></div>
 
+<!-- ══════════════════════════════════
+     WAITING ROOM BANNER
+     Shown while waitingTime window is open
+══════════════════════════════════ -->
+<div class="waiting-banner" id="waitingBanner">
+  <div class="waiting-box">
+    <div class="waiting-icon">⏳</div>
+    <div class="waiting-title">Waiting for players</div>
+    <div class="waiting-sub">Contest starts when the lobby closes</div>
+    <div class="waiting-countdown" id="waitingCountdown">0:00</div>
+    <div class="waiting-players">
+      <span id="waitingPlayerCount">1</span> player(s) in room
+    </div>
+  </div>
+</div>
+
 <!-- TOP BAR -->
 <div class="topbar">
-  <!-- Left -->
   <div class="topbar-left">
     <div class="logo-box">&lt;/&gt;</div>
     <div class="contest-meta">
       <div class="contest-name">CodeArena</div>
-      <div class="contest-timer">Time left: <span class="timer-val" id="timerVal">01:23:45</span></div>
+      <div class="contest-timer">Time left: <span class="timer-val" id="timerVal">--:--:--</span></div>
     </div>
   </div>
 
-  <!-- Center -->
   <div class="topbar-center">
     <select class="lang-select" id="langSelect">
       <option value="cpp">C++17</option>
@@ -681,11 +581,10 @@
     </button>
   </div>
 
-  <!-- Right -->
   <div class="topbar-right">
-    <div class="room-code-wrap" onclick="copyRoomCode(this)" title="Copy room code">
+    <div class="room-code-wrap" onclick="copyRoomCode()" title="Copy room code">
       <span class="room-code-label">Room</span>
-      <span class="room-code-val" id="roomCodeDisplay">X7K9PQ</span>
+      <span class="room-code-val" id="roomCodeDisplay">------</span>
       <svg class="copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
       </svg>
@@ -705,38 +604,32 @@
 <div class="lb-dropdown" id="lbDropdown">
   <div class="lb-inner">
     <div class="lb-header">
-      <div class="lb-title">
-        <div class="lb-live-dot"></div>
-        Live Rankings
-      </div>
-      <div class="lb-count" id="lbCount">8 participants</div>
+      <div class="lb-title"><div class="lb-live-dot"></div>Live Rankings</div>
+      <div class="lb-count" id="lbCount">— participants</div>
     </div>
-    <div class="lb-list" id="lbList">
-      <!-- populated by JS -->
-    </div>
+    <div class="lb-list" id="lbList"></div>
   </div>
 </div>
 
 <!-- SPLIT CONTAINER -->
 <div class="split-container" id="splitContainer">
 
-  <!-- LEFT: Problem Description -->
+  <!-- LEFT: Problem -->
   <div class="pane-problem" id="paneLeft" style="width:42%">
     <div class="pane-problem-header">
-      <span class="problem-badge badge-medium" id="problemBadge">Medium</span>
+      <span class="problem-badge badge-medium" id="problemBadge">—</span>
       <span class="problem-num" id="problemNum">#1</span>
       <div class="problem-nav">
         <div class="nav-btn disabled" id="prevBtn" onclick="navigateProblem(-1)" title="Previous problem">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </div>
-        <span class="problem-progress" id="problemProgress">1 / 1</span>
+        <span class="problem-progress" id="problemProgress">— / —</span>
         <div class="nav-btn disabled" id="nextBtn" onclick="navigateProblem(1)" title="Next problem">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
     </div>
     <div class="pane-problem-scroll" id="problemContent">
-      <!-- Loading skeletons -->
       <div class="skeleton" style="width:60%;height:22px;margin-bottom:16px;"></div>
       <div class="skeleton" style="width:100%"></div>
       <div class="skeleton" style="width:95%"></div>
@@ -747,14 +640,13 @@
     </div>
   </div>
 
-  <!-- DIVIDER -->
   <div class="divider" id="divider"></div>
 
-  <!-- RIGHT: Code Editor -->
+  <!-- RIGHT: Editor -->
   <div class="pane-editor" id="paneRight">
     <div class="editor-topbar">
       <div class="editor-tabs">
-        <div class="editor-tab active" onclick="switchTab(this,'code')">solution.py</div>
+        <div class="editor-tab active" id="activeTab">solution.py</div>
         <div class="editor-tab" onclick="switchTab(this,'testcase')">testcase</div>
       </div>
       <div class="editor-actions">
@@ -763,15 +655,12 @@
     </div>
 
     <div class="code-editor-wrap" id="codeWrap">
-      <div class="line-numbers" id="lineNumbers">
-        <div class="line-num">1</div>
-      </div>
+      <div class="line-numbers" id="lineNumbers"><div class="line-num">1</div></div>
       <textarea class="code-textarea" id="codeEditor" spellcheck="false" autocorrect="off" autocapitalize="off"
         oninput="updateLineNumbers()" onscroll="syncScroll()"
         placeholder="# Write your solution here..."></textarea>
     </div>
 
-    <!-- OUTPUT PANE -->
     <div class="output-pane" id="outputPane">
       <div class="output-header">
         <div class="output-title">
@@ -787,110 +676,163 @@
 </div>
 
 <script>
-  /* ═══════════════════════════════════════════
-     PROBLEM FETCHING (from Redis via backend)
-  ═══════════════════════════════════════════ */
-  const ROOM_CODE = new URLSearchParams(window.location.search).get('room') || 'X7K9PQ';
+  /* ════════════════════════════════════════════════
+     ROOM CODE — read from URL ?room=XXXXXX
+  ════════════════════════════════════════════════ */
+  const ROOM_CODE = new URLSearchParams(window.location.search).get('room') || '';
+  if (!ROOM_CODE) {
+    // No room code in URL — send back to home
+    window.location.href = '/';
+  }
   document.getElementById('roomCodeDisplay').textContent = ROOM_CODE;
 
-  // Multi-problem state
-  let allProblems = [];
-  let currentProblemIndex = 0;
+  /* ════════════════════════════════════════════════
+     STATE
+  ════════════════════════════════════════════════ */
+  let allProblems          = [];
+  let currentProblemIndex  = 0;
+  let contestTimerSecs     = 0;   // counts DOWN during contest
+  let contestTimerInterval = null;
+  let waitingInterval      = null;
+  let isInWaitingPhase     = true;
 
-  // Demo problems fallback
-  const DEMO_PROBLEMS = [
-    {
-      number: 1,
-      difficulty: 'easy',
-      title: 'Two Sum',
-      description: `Given an array of integers <code>nums</code> and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to target</em>.\n\nYou may assume that each input would have <strong>exactly one solution</strong>, and you may not use the same element twice.\n\nYou can return the answer in any order.`,
-      examples: [
-        { input: 'nums = [2,7,11,15], target = 9', output: '[0,1]', explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].' },
-        { input: 'nums = [3,2,4], target = 6', output: '[1,2]', explanation: '' },
-        { input: 'nums = [3,3], target = 6', output: '[0,1]', explanation: '' }
-      ],
-      constraints: [
-        '2 ≤ nums.length ≤ 10⁴',
-        '-10⁹ ≤ nums[i] ≤ 10⁹',
-        '-10⁹ ≤ target ≤ 10⁹',
-        'Only one valid answer exists'
-      ],
-      snippets: {
-        python: `class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        # Your code here\n        pass\n`,
-        cpp: `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Your code here\n    }\n};\n`,
-        java: `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Your code here\n        return new int[]{};\n    }\n}\n`
-      }
-    },
-    {
-      number: 2,
-      difficulty: 'medium',
-      title: 'Two Sum II – Sorted Array',
-      description: `Given a <code>1-indexed</code> array of integers <code>numbers</code> that is already sorted in non-decreasing order, find two numbers such that they add up to a specific <code>target</code> number.\n\nReturn the indices of the two numbers, <code>index1</code> and <code>index2</code>, added by one as an integer array <code>[index1, index2]</code> of length 2.\n\nThe tests are generated such that there is <strong>exactly one solution</strong>. You may not use the same element twice.`,
-      examples: [
-        { input: 'numbers = [2,7,11,15], target = 9', output: '[1,2]', explanation: 'The sum of 2 and 7 is 9. Therefore, index1 = 1, index2 = 2.' },
-        { input: 'numbers = [2,3,4], target = 6', output: '[1,3]', explanation: 'The sum of 2 and 4 is 6.' },
-        { input: 'numbers = [-1,0], target = -1', output: '[1,2]', explanation: 'The sum of -1 and 0 is -1.' }
-      ],
-      constraints: [
-        '2 ≤ numbers.length ≤ 3 × 10⁴',
-        '-1000 ≤ numbers[i] ≤ 1000',
-        'numbers is sorted in non-decreasing order',
-        '-1000 ≤ target ≤ 1000',
-        'Exactly one solution exists'
-      ],
-      snippets: {
-        python: `class Solution:\n    def twoSum(self, numbers: List[int], target: int) -> List[int]:\n        # Your code here\n        pass\n`,
-        cpp: `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& numbers, int target) {\n        // Your code here\n    }\n};\n`,
-        java: `class Solution {\n    public int[] twoSum(int[] numbers, int target) {\n        // Your code here\n        return new int[]{};\n    }\n}\n`
-      }
-    },
-    {
-      number: 3,
-      difficulty: 'hard',
-      title: 'Trapping Rain Water',
-      description: `Given <code>n</code> non-negative integers representing an elevation map where the width of each bar is <code>1</code>, compute how much water it can trap after raining.`,
-      examples: [
-        { input: 'height = [0,1,0,2,1,0,1,3,2,1,2,1]', output: '6', explanation: 'The above elevation map is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water are being trapped.' },
-        { input: 'height = [4,2,0,3,2,5]', output: '9', explanation: '' }
-      ],
-      constraints: [
-        'n == height.length',
-        '1 ≤ n ≤ 2 × 10⁴',
-        '0 ≤ height[i] ≤ 10⁵'
-      ],
-      snippets: {
-        python: `class Solution:\n    def trap(self, height: List[int]) -> int:\n        # Your code here\n        pass\n`,
-        cpp: `class Solution {\npublic:\n    int trap(vector<int>& height) {\n        // Your code here\n        return 0;\n    }\n};\n`,
-        java: `class Solution {\n    public int trap(int[] height) {\n        // Your code here\n        return 0;\n    }\n}\n`
-      }
-    }
-  ];
-
+  /* ════════════════════════════════════════════════
+     FETCH PROBLEMS + TIMER from /problems?room=CODE
+     Backend returns:
+       {
+         success: true,
+         problems: [...],
+         contestDuration: <seconds>,   // total contest time
+         roomCode: "XXXXXX"
+       }
+     We compute the waiting phase client-side using
+     the waitingTimeLeftMs returned from /joinroom,
+     stored in sessionStorage by home.html.
+  ════════════════════════════════════════════════ */
   async function fetchAllProblems() {
     try {
       const res = await fetch(`/problems?room=${ROOM_CODE}`);
       if (!res.ok) throw new Error('fetch failed');
       const data = await res.json();
-      // Expects: { problems: [...], timeRemaining: <seconds> }
-      allProblems = data.problems;
-      if (typeof data.timeRemaining === 'number') {
-        totalSecs = data.timeRemaining;
-      }
+
+      if (!data.success) throw new Error(data.error || 'fetch failed');
+
+      allProblems      = data.problems;
+      contestTimerSecs = data.contestDuration;  // e.g. 3600 / 5400 / 7200
+
     } catch(e) {
-      allProblems = DEMO_PROBLEMS;
-      // totalSecs keeps its default fallback value
+      // Fallback: demo data so the UI isn't broken during dev
+      console.warn('[contest] Problem fetch failed, using demo data:', e.message);
+      allProblems      = DEMO_PROBLEMS;
+      contestTimerSecs = 3600;
     }
+
     currentProblemIndex = 0;
     renderProblem(allProblems[0]);
     updateNavButtons();
+    startPhaseLogic();
   }
 
+  /* ════════════════════════════════════════════════
+     PHASE LOGIC
+     home.html stores waitingTimeLeftMs in
+     sessionStorage after a successful join/create.
+     If missing we just skip straight to contest.
+  ════════════════════════════════════════════════ */
+  function startPhaseLogic() {
+    const stored = sessionStorage.getItem(`waitingTimeLeft_${ROOM_CODE}`);
+    const waitingMs = stored ? parseInt(stored) : 0;
+
+    if (waitingMs > 0) {
+      // Still inside the waiting window
+      showWaitingBanner(waitingMs);
+    } else {
+      // Waiting window already passed — go straight to contest
+      startContest();
+    }
+  }
+
+  /* ── Waiting phase ── */
+  function showWaitingBanner(waitingMs) {
+    isInWaitingPhase = true;
+    document.getElementById('waitingBanner').classList.add('show');
+
+    let remainingMs = waitingMs;
+
+    function tick() {
+      if (remainingMs <= 0) {
+        clearInterval(waitingInterval);
+        hideWaitingBanner();
+        startContest();
+        return;
+      }
+
+      const totalSecs = Math.ceil(remainingMs / 1000);
+      const m = Math.floor(totalSecs / 60);
+      const s = totalSecs % 60;
+      document.getElementById('waitingCountdown').textContent =
+        `${m}:${String(s).padStart(2,'0')}`;
+
+      // Optionally poll player count here via WebSocket or polling
+      // fetchPlayerCount();
+
+      remainingMs -= 1000;
+    }
+
+    tick(); // run immediately
+    waitingInterval = setInterval(tick, 1000);
+
+    // Clear stored value so refreshing doesn't re-trigger
+    sessionStorage.removeItem(`waitingTimeLeft_${ROOM_CODE}`);
+  }
+
+  function hideWaitingBanner() {
+    isInWaitingPhase = false;
+    document.getElementById('waitingBanner').classList.remove('show');
+  }
+
+  /* ── Contest phase ── */
+  function startContest() {
+    isInWaitingPhase = false;
+    hideWaitingBanner();
+
+    function tick() {
+      if (contestTimerSecs <= 0) {
+        clearInterval(contestTimerInterval);
+        document.getElementById('timerVal').textContent = '00:00:00';
+        onContestEnd();
+        return;
+      }
+      contestTimerSecs--;
+      const h = String(Math.floor(contestTimerSecs / 3600)).padStart(2,'0');
+      const m = String(Math.floor((contestTimerSecs % 3600) / 60)).padStart(2,'0');
+      const s = String(contestTimerSecs % 60).padStart(2,'0');
+      const el = document.getElementById('timerVal');
+      el.textContent = `${h}:${m}:${s}`;
+      if (contestTimerSecs < 300)      el.style.color = 'var(--hard)';
+      else if (contestTimerSecs < 900) el.style.color = 'var(--medium)';
+      else                             el.style.color = 'var(--purple-xlight)';
+    }
+
+    tick();
+    contestTimerInterval = setInterval(tick, 1000);
+  }
+
+  function onContestEnd() {
+    // You can redirect to a results page here
+    // window.location.href = `/results?room=${ROOM_CODE}`;
+    document.getElementById('timerVal').style.color = 'var(--hard)';
+    document.getElementById('timerVal').textContent  = 'ENDED';
+  }
+
+  /* ════════════════════════════════════════════════
+     PROBLEM NAVIGATION
+  ════════════════════════════════════════════════ */
   function navigateProblem(dir) {
     const next = currentProblemIndex + dir;
     if (next < 0 || next >= allProblems.length) return;
     currentProblemIndex = next;
 
-    // Fade out → render → fade in
     const content = document.getElementById('problemContent');
     content.style.opacity = '0';
     content.style.transition = 'opacity 0.18s ease';
@@ -900,32 +842,25 @@
     }, 180);
 
     updateNavButtons();
-    // Reset editor for new problem
+    // Clear editor when switching problems
     document.getElementById('codeEditor').value = '';
     updateLineNumbers();
   }
 
   function updateNavButtons() {
-    const prev = document.getElementById('prevBtn');
-    const next = document.getElementById('nextBtn');
-    const prog = document.getElementById('problemProgress');
     const total = allProblems.length;
-
-    prev.classList.toggle('disabled', currentProblemIndex === 0);
-    next.classList.toggle('disabled', currentProblemIndex === total - 1);
-    prog.textContent = `${currentProblemIndex + 1} / ${total}`;
+    document.getElementById('prevBtn').classList.toggle('disabled', currentProblemIndex === 0);
+    document.getElementById('nextBtn').classList.toggle('disabled', currentProblemIndex === total - 1);
+    document.getElementById('problemProgress').textContent = `${currentProblemIndex + 1} / ${total}`;
   }
 
   function renderProblem(data) {
-    // Badge & number
     const badge = document.getElementById('problemBadge');
     badge.textContent = data.difficulty.charAt(0).toUpperCase() + data.difficulty.slice(1);
     badge.className = `problem-badge badge-${data.difficulty}`;
     document.getElementById('problemNum').textContent = `#${data.number}`;
 
-    // Build HTML
     let html = `<div class="problem-title">${data.title}</div>`;
-
     html += `<div class="problem-section-label">Description</div>`;
     html += `<div class="problem-desc">${data.description.replace(/\n/g,'<br/>')}</div>`;
 
@@ -946,38 +881,32 @@
 
     document.getElementById('problemContent').innerHTML = html;
 
-    // Set editor snippet for current language
+    // Set code snippet
     const lang = document.getElementById('langSelect').value;
     const editor = document.getElementById('codeEditor');
-    if (!editor.value && data.snippets) {
+    if (data.snippets) {
       editor.value = data.snippets[lang] || `// Solution for: ${data.title}\n`;
       updateLineNumbers();
     }
   }
 
-  /* ═══════════════════════════════════════
-     LEADERBOARD
-  ═══════════════════════════════════════ */
+  /* ════════════════════════════════════════════════
+     LEADERBOARD (mock — replace with WebSocket/poll)
+  ════════════════════════════════════════════════ */
   const MOCK_LEADERBOARD = [
     { name: 'you', score: 1480, solved: 2, avatar: '#7c3aed', me: true },
     { name: 'ninja_coder', score: 1920, solved: 3, avatar: '#0ea5e9' },
     { name: 'algomaster', score: 1750, solved: 3, avatar: '#f59e0b' },
     { name: 'bytewizard', score: 1650, solved: 2, avatar: '#10b981' },
-    { name: 'recursion_fan', score: 1200, solved: 2, avatar: '#ec4899' },
-    { name: 'dp_enjoyer', score: 980, solved: 1, avatar: '#06b6d4' },
-    { name: 'stack_overflow', score: 850, solved: 1, avatar: '#8b5cf6' },
-    { name: 'segfault_user', score: 200, solved: 0, avatar: '#64748b' },
   ];
 
   function renderLeaderboard() {
-    // Sort by score desc
     const sorted = [...MOCK_LEADERBOARD].sort((a,b) => b.score - a.score);
     document.getElementById('lbCount').textContent = `${sorted.length} participants`;
-
     const list = document.getElementById('lbList');
     list.innerHTML = sorted.map((p, i) => {
       const rank = i + 1;
-      const rankCls = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
+      const rankCls = rank <= 3 ? `rank-${rank}` : 'rank-other';
       const rankStr = rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank;
       return `<div class="lb-item ${p.me ? 'me' : ''}">
         <div class="lb-rank ${rankCls}">${rankStr}</div>
@@ -998,37 +927,19 @@
     document.getElementById('lbToggleBtn').classList.toggle('active', lbOpen);
   }
 
-  /* ═══════════════════════════════════════
+  /* ════════════════════════════════════════════════
      COPY ROOM CODE
-  ═══════════════════════════════════════ */
-  function copyRoomCode(el) {
-    const code = document.getElementById('roomCodeDisplay').textContent;
-    navigator.clipboard.writeText(code).catch(() => {});
+  ════════════════════════════════════════════════ */
+  function copyRoomCode() {
+    navigator.clipboard.writeText(ROOM_CODE).catch(() => {});
     const toast = document.getElementById('copyToast');
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 1600);
   }
 
-  /* ═══════════════════════════════════════
-     TIMER
-  ═══════════════════════════════════════ */
-  let totalSecs = 0; // set from backend via fetchAllProblems
-  function tickTimer() {
-    if (totalSecs <= 0) { document.getElementById('timerVal').textContent = '00:00:00'; return; }
-    totalSecs--;
-    const h = String(Math.floor(totalSecs / 3600)).padStart(2,'0');
-    const m = String(Math.floor((totalSecs % 3600) / 60)).padStart(2,'0');
-    const s = String(totalSecs % 60).padStart(2,'0');
-    const el = document.getElementById('timerVal');
-    el.textContent = `${h}:${m}:${s}`;
-    if (totalSecs < 300) el.style.color = 'var(--hard)'; // red last 5 min
-    else if (totalSecs < 900) el.style.color = 'var(--medium)'; // orange last 15 min
-  }
-  setInterval(tickTimer, 1000);
-
-  /* ═══════════════════════════════════════
-     CODE EDITOR — LINE NUMBERS
-  ═══════════════════════════════════════ */
+  /* ════════════════════════════════════════════════
+     CODE EDITOR
+  ════════════════════════════════════════════════ */
   function updateLineNumbers() {
     const ta = document.getElementById('codeEditor');
     const lines = ta.value.split('\n').length;
@@ -1039,102 +950,109 @@
   }
 
   function syncScroll() {
-    const ta = document.getElementById('codeEditor');
-    const ln = document.getElementById('lineNumbers');
-    ln.scrollTop = ta.scrollTop;
+    document.getElementById('lineNumbers').scrollTop =
+      document.getElementById('codeEditor').scrollTop;
   }
 
-  // Tab key inserts spaces
   document.getElementById('codeEditor').addEventListener('keydown', function(e) {
     if (e.key === 'Tab') {
       e.preventDefault();
-      const start = this.selectionStart, end = this.selectionEnd;
-      this.value = this.value.substring(0,start) + '    ' + this.value.substring(end);
-      this.selectionStart = this.selectionEnd = start + 4;
+      const s = this.selectionStart, end = this.selectionEnd;
+      this.value = this.value.substring(0,s) + '    ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = s + 4;
       updateLineNumbers();
     }
   });
 
-  // Language switch — update tab name & snippet
   document.getElementById('langSelect').addEventListener('change', function() {
     const ext = { cpp:'cpp', java:'java', python:'py' };
-    document.querySelector('.editor-tab.active').textContent = `solution.${ext[this.value] || 'txt'}`;
+    document.getElementById('activeTab').textContent = `solution.${ext[this.value] || 'txt'}`;
+    // Also reload snippet for current problem in new language
+    if (allProblems[currentProblemIndex]) {
+      const snippets = allProblems[currentProblemIndex].snippets;
+      if (snippets) {
+        document.getElementById('codeEditor').value = snippets[this.value] || '';
+        updateLineNumbers();
+      }
+    }
   });
 
-  /* ═══════════════════════════════════════
+  /* ════════════════════════════════════════════════
      TABS
-  ═══════════════════════════════════════ */
+  ════════════════════════════════════════════════ */
   function switchTab(el, type) {
     document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
     const ta = document.getElementById('codeEditor');
     if (type === 'testcase') {
-      ta.value = `# Custom test case\n# Input:\nnumbers = [2, 7, 11, 15]\ntarget = 9\n\n# Expected Output:\n# [1, 2]\n`;
+      ta.value = `# Custom test case\n# Input:\n\n# Expected Output:\n`;
     } else {
-      ta.value = '';
+      const lang = document.getElementById('langSelect').value;
+      const p = allProblems[currentProblemIndex];
+      ta.value = p?.snippets?.[lang] || '';
     }
     updateLineNumbers();
   }
 
-  /* ═══════════════════════════════════════
-     RUN CODE
-  ═══════════════════════════════════════ */
+  /* ════════════════════════════════════════════════
+     RUN CODE  →  POST /run
+  ════════════════════════════════════════════════ */
   async function runCode() {
     const code = document.getElementById('codeEditor').value;
     const lang = document.getElementById('langSelect').value;
-    const btn = document.getElementById('runBtn');
+    const btn  = document.getElementById('runBtn');
 
-    // Open output pane
-    const outputPane = document.getElementById('outputPane');
-    outputPane.classList.add('open');
-
+    document.getElementById('outputPane').classList.add('open');
     const statusEl = document.getElementById('outputStatus');
-    const bodyEl = document.getElementById('outputBody');
+    const bodyEl   = document.getElementById('outputBody');
 
-    statusEl.className = 'output-status status-running';
+    statusEl.className   = 'output-status status-running';
     statusEl.textContent = 'Running...';
-    bodyEl.innerHTML = '<span class="out-info">⏳ Executing against test cases...</span>';
+    bodyEl.innerHTML     = '<span class="out-info">⏳ Executing against test cases...</span>';
 
-    btn.disabled = true;
+    btn.disabled    = true;
     btn.style.opacity = '0.7';
 
     try {
       const res = await fetch('/run', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, language: lang, room: ROOM_CODE, problem: allProblems[currentProblemIndex]?.number })
+        body: JSON.stringify({
+          code,
+          language: lang,
+          room:     ROOM_CODE,
+          problem:  allProblems[currentProblemIndex]?.number
+        })
       });
-      if (res.ok) {
-        const data = await res.json();
-        renderOutput(data);
-      } else {
-        throw new Error('Server error');
-      }
+
+      if (!res.ok) throw new Error('Server error');
+      const data = await res.json();
+      renderOutput(data);
     } catch(e) {
-      // Demo output
+      // Demo output while /run is not yet implemented
       renderOutput({
-        status: 'accepted',
-        passed: 3, total: 3,
-        runtime: '52ms', memory: '17.2MB',
+        status: 'accepted', passed: 2, total: 2,
+        runtime: '48ms', memory: '16.8MB',
         results: [
-          { test: 1, input: '[2,7,11,15], 9', expected: '[1,2]', got: '[1,2]', pass: true },
-          { test: 2, input: '[2,3,4], 6', expected: '[1,3]', got: '[1,3]', pass: true },
-          { test: 3, input: '[-1,0], -1', expected: '[1,2]', got: '[1,2]', pass: true },
+          { test: 1, input: 'sample input 1', expected: 'expected 1', got: 'expected 1', pass: true },
+          { test: 2, input: 'sample input 2', expected: 'expected 2', got: 'expected 2', pass: true },
         ]
       });
     }
 
-    btn.disabled = false;
+    btn.disabled      = false;
     btn.style.opacity = '1';
   }
 
   function renderOutput(data) {
     const statusEl = document.getElementById('outputStatus');
-    const bodyEl = document.getElementById('outputBody');
-    const allPass = data.passed === data.total;
+    const bodyEl   = document.getElementById('outputBody');
+    const allPass  = data.passed === data.total;
 
-    statusEl.className = `output-status ${allPass ? 'status-accepted' : 'status-error'}`;
-    statusEl.textContent = allPass ? `✓ Accepted (${data.passed}/${data.total})` : `✗ Wrong Answer (${data.passed}/${data.total})`;
+    statusEl.className   = `output-status ${allPass ? 'status-accepted' : 'status-error'}`;
+    statusEl.textContent = allPass
+      ? `✓ Accepted (${data.passed}/${data.total})`
+      : `✗ Wrong Answer (${data.passed}/${data.total})`;
 
     let html = `<div style="margin-bottom:10px;color:var(--text-dim)">
       Runtime: <span style="color:var(--purple-xlight)">${data.runtime || '—'}</span> &nbsp;|&nbsp;
@@ -1144,7 +1062,10 @@
     (data.results || []).forEach(r => {
       html += `<div style="margin-bottom:6px">
         <span class="${r.pass ? 'out-pass' : 'out-fail'}">${r.pass ? '✓' : '✗'} Test ${r.test}</span>
-        <span style="color:var(--muted);font-size:11px;margin-left:8px">Input: ${r.input} → Expected: ${r.expected}${!r.pass ? ` · Got: <span class="out-fail">${r.got}</span>` : ''}</span>
+        <span style="color:var(--muted);font-size:11px;margin-left:8px">
+          Input: ${r.input} → Expected: ${r.expected}
+          ${!r.pass ? ` · Got: <span class="out-fail">${r.got}</span>` : ''}
+        </span>
       </div>`;
     });
 
@@ -1155,6 +1076,9 @@
     document.getElementById('outputPane').classList.remove('open');
   }
 
+  /* ════════════════════════════════════════════════
+     SUBMIT CODE  →  POST /submit
+  ════════════════════════════════════════════════ */
   async function submitCode() {
     const code = document.getElementById('codeEditor').value;
     const lang = document.getElementById('langSelect').value;
@@ -1162,27 +1086,27 @@
       await fetch('/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, language: lang, room: ROOM_CODE, problem: allProblems[currentProblemIndex]?.number })
+        body: JSON.stringify({
+          code,
+          language: lang,
+          room:     ROOM_CODE,
+          problem:  allProblems[currentProblemIndex]?.number
+        })
       });
     } catch(e) {}
-    // Trigger run view as well
-    runCode();
+    runCode(); // also show run output
   }
 
-  /* ═══════════════════════════════════════
+  /* ════════════════════════════════════════════════
      DRAGGABLE DIVIDER
-  ═══════════════════════════════════════ */
-  const divider = document.getElementById('divider');
+  ════════════════════════════════════════════════ */
+  const divider   = document.getElementById('divider');
   const container = document.getElementById('splitContainer');
-  const paneLeft = document.getElementById('paneLeft');
-  const paneRight = document.getElementById('paneRight');
-
+  const paneLeft  = document.getElementById('paneLeft');
   let dragging = false, startX = 0, startW = 0;
 
   divider.addEventListener('mousedown', e => {
-    dragging = true;
-    startX = e.clientX;
-    startW = paneLeft.offsetWidth;
+    dragging = true; startX = e.clientX; startW = paneLeft.offsetWidth;
     divider.classList.add('dragging');
     document.body.style.cursor = 'col-resize';
     document.body.style.userSelect = 'none';
@@ -1190,10 +1114,8 @@
 
   document.addEventListener('mousemove', e => {
     if (!dragging) return;
-    const delta = e.clientX - startX;
-    const containerW = container.offsetWidth;
-    let newW = startW + delta;
-    newW = Math.max(220, Math.min(containerW - 280, newW));
+    let newW = startW + (e.clientX - startX);
+    newW = Math.max(220, Math.min(container.offsetWidth - 280, newW));
     paneLeft.style.width = newW + 'px';
   });
 
@@ -1205,28 +1127,17 @@
     document.body.style.userSelect = '';
   });
 
-  /* ═══════════════════════════════════════
+  /* ════════════════════════════════════════════════
      KEYBOARD SHORTCUTS
-  ═══════════════════════════════════════ */
+  ════════════════════════════════════════════════ */
   document.addEventListener('keydown', e => {
-    // Ctrl+Enter → Run
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      runCode();
-    }
-    // Ctrl+L → Toggle Leaderboard
-    if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
-      e.preventDefault();
-      toggleLeaderboard();
-    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runCode(); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'l')     { e.preventDefault(); toggleLeaderboard(); }
   });
 
-  /* ═══════════════════════════════════════
-     CLOSE LEADERBOARD ON OUTSIDE CLICK
-  ═══════════════════════════════════════ */
   document.addEventListener('click', e => {
     if (!lbOpen) return;
-    const lb = document.getElementById('lbDropdown');
+    const lb  = document.getElementById('lbDropdown');
     const btn = document.getElementById('lbToggleBtn');
     if (!lb.contains(e.target) && !btn.contains(e.target)) {
       lbOpen = false;
@@ -1235,9 +1146,26 @@
     }
   });
 
-  /* ═══════════════════════════════════════
+  /* ════════════════════════════════════════════════
+     DEMO PROBLEMS (fallback if /problems fails)
+  ════════════════════════════════════════════════ */
+  const DEMO_PROBLEMS = [
+    {
+      number: 1, difficulty: 'easy', title: 'Two Sum',
+      description: `Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to target.`,
+      examples: [{ input: 'nums = [2,7,11,15], target = 9', output: '[0,1]', explanation: 'nums[0] + nums[1] == 9' }],
+      constraints: ['2 ≤ nums.length ≤ 10⁴', '-10⁹ ≤ nums[i] ≤ 10⁹', 'Only one valid answer exists'],
+      snippets: {
+        python: `class Solution:\n    def twoSum(self, nums, target):\n        pass\n`,
+        cpp:    `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n    }\n};\n`,
+        java:   `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        return new int[]{};\n    }\n}\n`
+      }
+    }
+  ];
+
+  /* ════════════════════════════════════════════════
      INIT
-  ═══════════════════════════════════════ */
+  ════════════════════════════════════════════════ */
   fetchAllProblems();
   renderLeaderboard();
   updateLineNumbers();
