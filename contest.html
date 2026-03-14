@@ -444,13 +444,13 @@
     .btn-submit {
       display: flex; align-items: center; gap: 7px;
       padding: 7px 20px;
-      background: linear-gradient(135deg, var(--purple) 0%, #4f46e5 100%);
+      background: linear-gradient(135deg, var(--green) 0%, #059669 100%);
       border: none; border-radius: 9px;
       color: #fff;
       font-family: 'Fira Code', monospace;
       font-size: 13px; font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 0 16px var(--purple-glow);
+      box-shadow: 0 0 16px var(--green-glow);
       transition: transform 0.15s, box-shadow 0.15s;
       position: relative; overflow: hidden;
     }
@@ -460,7 +460,7 @@
       background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 60%);
       pointer-events: none;
     }
-    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 24px var(--purple-glow); }
+    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 24px var(--green-glow); }
     .btn-submit:active { transform: translateY(0); }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
@@ -570,6 +570,10 @@
       <option value="cpp">C++17</option>
       <option value="java">Java 17</option>
     </select>
+    <button class="btn-submit" id="submitBtn" onclick="submitCode()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
+      Submit
+    </button>
   </div>
 
   <div class="topbar-right">
@@ -630,12 +634,6 @@
       <div class="editor-tabs">
         <div class="editor-tab active" id="activeTab">solution.py</div>
       </div>
-      <div class="editor-actions">
-        <button class="btn-submit" id="submitBtn" onclick="submitCode()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
-          Submit
-        </button>
-      </div>
     </div>
 
     <div class="code-editor-wrap">
@@ -686,21 +684,29 @@
       const data = await res.json();
       if (!data.success) throw new Error(data.error || 'fetch failed');
 
-      allProblems              = data.problems;
-      window._contestDuration  = data.contestDuration;
-      window._contestStartTime = data.contestStartTime;
+      allProblems             = data.problems;
+      window._contestDuration = data.contestDuration || 3600;
+
+      // Use contestStartTime if present (new rooms after createroom.js fix)
+      // Fallback: createdAt + waitingTime*60s (older rooms stored in Redis)
+      // Last resort: treat as already running from now
+      if (data.contestStartTime) {
+        window._contestStartTime = data.contestStartTime;
+      } else if (data.createdAt && data.waitingTime) {
+        window._contestStartTime = data.createdAt + (data.waitingTime * 60 * 1000);
+      } else {
+        window._contestStartTime = Date.now() - 1000;
+      }
 
     } catch(e) {
       console.warn('[contest] Problem fetch failed:', e.message);
       allProblems              = [];
       window._contestDuration  = 3600;
-      window._contestStartTime = Date.now();
+      window._contestStartTime = Date.now() - 1000;
     }
 
     currentProblemIndex = 0;
-    if (allProblems.length > 0) {
-      renderProblem(allProblems[0]);
-    }
+    if (allProblems.length > 0) renderProblem(allProblems[0]);
     updateNavButtons();
     startPhaseLogic();
   }
