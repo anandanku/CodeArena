@@ -3,15 +3,37 @@ import redis from "./redisconnection.js";
 
 const router = express.Router();
 
-// ── Normalize a single testcase value ───────────────────────────
-// Handles both flat strings and nested arrays
-// e.g. "input1"             → "input1"
-// e.g. ["input1", "input2"] → "input1, input2"
-function normalizeCase(val) {
+// ── Safely stringify any value from MongoDB ──────────────────────
+// string/number  → returned as string
+// array          → elements joined by newline (nulls filtered out)
+// null/undefined/empty → returns null (signals "skip this entry")
+function normalize(val) {
+  if (val === null || val === undefined || val === '') return null;
   if (Array.isArray(val)) {
-    return val.join(", ");
+    const cleaned = val
+      .filter(v => v !== null && v !== undefined && v !== '')
+      .map(String);
+    return cleaned.length > 0 ? cleaned.join('\n') : null;
   }
-  return val ?? 'N/A';
+  return String(val);
+}
+
+// ── Zip two parallel arrays into { input, output } pairs ─────────
+// Skips any pair where either side is missing/empty so no "N/A"
+// or "undefined" ever reaches the frontend
+function zipCases(inputs, outputs, inputKey, outputKey) {
+  const ins  = inputs  || [];
+  const outs = outputs || [];
+  const len  = Math.max(ins.length, outs.length);
+  const result = [];
+  for (let i = 0; i < len; i++) {
+    const inp = normalize(ins[i]);
+    const out = normalize(outs[i]);
+    if (inp !== null && out !== null) {
+      result.push({ [inputKey]: inp, [outputKey]: out });
+    }
+  }
+  return result;
 }
 
 router.get("/problems", async (req, res) => {
@@ -52,25 +74,16 @@ router.get("/problems", async (req, res) => {
       title:       p.title,
       difficulty:  p.difficulty,
       description: p.description,
-
-      // ── Examples: zip examples (inputs) + exampleoutput (outputs) ──
-      // Each entry can itself be a string or an array
-      examples: (p.examples || []).map((input, idx) => ({
-        input:  normalizeCase(input),
-        output: normalizeCase((p.exampleoutput || [])[idx]),
-      })),
-
       constraints: p.constraints || [],
+      snippets:    p.snippets    || {},
 
-      snippets: p.snippets || {},
+      // examples[]      = inputs,  exampleoutput[] = outputs
+      // Only pairs where BOTH input and output exist are included
+      examples: zipCases(p.examples, p.exampleoutput, 'input', 'output'),
 
-      // ── Testcases: zip testcases (inputs) + output (outputs) ────────
-      // Supports flat array:       ["input1", "input2"]
-      // Supports array of arrays:  [["a", "b"], ["c", "d"]]
-      testcases: (p.testcases || []).map((input, idx) => ({
-        input:    normalizeCase(input),
-        expected: normalizeCase((p.output || [])[idx]),
-      })),
+      // testcases[]     = inputs,  output[] = expected outputs
+      // Only pairs where BOTH exist are included — nulls skipped automatically
+      testcases: zipCases(p.testcases, p.output, 'input', 'expected'),
     }));
 
     res.json({
