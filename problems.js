@@ -3,6 +3,17 @@ import redis from "./redisconnection.js";
 
 const router = express.Router();
 
+// ── Normalize a single testcase value ───────────────────────────
+// Handles both flat strings and nested arrays
+// e.g. "input1"             → "input1"
+// e.g. ["input1", "input2"] → "input1, input2"
+function normalizeCase(val) {
+  if (Array.isArray(val)) {
+    return val.join(", ");
+  }
+  return val ?? 'N/A';
+}
+
 router.get("/problems", async (req, res) => {
   try {
     const { room } = req.query;
@@ -42,15 +53,24 @@ router.get("/problems", async (req, res) => {
       difficulty:  p.difficulty,
       description: p.description,
 
-      // examples array (inputs) + exampleoutput array (outputs) are separate
-      // in the schema — zip them together into { input, output } objects
+      // ── Examples: zip examples (inputs) + exampleoutput (outputs) ──
+      // Each entry can itself be a string or an array
       examples: (p.examples || []).map((input, idx) => ({
-        input:  input,
-        output: (p.exampleoutput || [])[idx] ?? 'N/A',
+        input:  normalizeCase(input),
+        output: normalizeCase((p.exampleoutput || [])[idx]),
       })),
 
       constraints: p.constraints || [],
-      snippets:    p.snippets    || {},
+
+      snippets: p.snippets || {},
+
+      // ── Testcases: zip testcases (inputs) + output (outputs) ────────
+      // Supports flat array:       ["input1", "input2"]
+      // Supports array of arrays:  [["a", "b"], ["c", "d"]]
+      testcases: (p.testcases || []).map((input, idx) => ({
+        input:    normalizeCase(input),
+        expected: normalizeCase((p.output || [])[idx]),
+      })),
     }));
 
     res.json({
