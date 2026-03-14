@@ -83,10 +83,10 @@ app.use(passport.session());
 app.use("/", authRouter);
 
 /* Room creation */
-app.use("/createroom", createRoomRouter);
+app.use("/", createRoomRouter);
 
 /* Join room */
-app.use("/joinroom", joinRoomRouter);
+app.use("/", joinRoomRouter);
 
 /* Fetch contest problems */
 app.use("/", problemsRouter);
@@ -108,6 +108,7 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
