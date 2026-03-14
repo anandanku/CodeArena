@@ -76,9 +76,7 @@
     }
 
     /* Profile circle */
-    .profile-wrap {
-      position: relative;
-    }
+    .profile-wrap { position: relative; }
 
     .avatar {
       width: 38px; height: 38px;
@@ -160,10 +158,7 @@
       color: var(--hard);
     }
 
-    .profile-menu-item svg {
-      flex-shrink: 0; opacity: 0.6;
-    }
-
+    .profile-menu-item svg { flex-shrink: 0; opacity: 0.6; }
     .profile-menu-item:hover svg { opacity: 1; }
 
     /* ── HERO ── */
@@ -239,7 +234,6 @@
     }
 
     .card-title {
-      font-family: 'Fira Code', monospace;
       font-size: 17px; font-weight: 600; color: #f1f5f9; letter-spacing: -0.3px;
     }
 
@@ -409,7 +403,7 @@
     <!-- Profile circle with dropdown -->
     <div class="profile-wrap" id="profileWrap">
       <div class="avatar" id="avatarBtn" onclick="toggleProfileDropdown()">
-        <!-- Filled by JS: either <img> or initials -->
+        <!-- Filled by JS -->
       </div>
       <div class="profile-dropdown" id="profileDropdown">
         <div class="profile-dropdown-header">
@@ -539,8 +533,6 @@
   <script>
     /* ══════════════════════════════════════════
        CURRENT USER
-       Auth is already done — just fetch the
-       session user from your existing endpoint.
     ══════════════════════════════════════════ */
     let currentUser = null;
 
@@ -548,10 +540,11 @@
       try {
         const res = await fetch('/auth/me');
         if (!res.ok) throw new Error('not authed');
-        currentUser = await res.json();  // { googleId, name, email, photoURL }
+        const data = await res.json();       // { authenticated: true, user: { googleId, name, email, photoURL } }
+        if (!data.authenticated || !data.user) throw new Error('not authed');
+        currentUser = data.user;             // ← FIX: extract nested user object
         renderAvatar();
-      } catch(_) {
-        // Auth failed — redirect to login
+      } catch (_) {
         window.location.href = '/auth/google';
       }
     }
@@ -574,7 +567,6 @@
       document.getElementById('profileDropdown').classList.toggle('open');
     }
 
-    // Close on outside click
     document.addEventListener('click', e => {
       const wrap = document.getElementById('profileWrap');
       if (!wrap.contains(e.target)) {
@@ -582,8 +574,14 @@
       }
     });
 
-    function signOut() {
-      window.location.href = '/auth/logout';
+    /* ══════════════════════════════════════════
+       SIGN OUT  — FIX: use POST fetch, not href
+    ══════════════════════════════════════════ */
+    async function signOut() {
+      try {
+        await fetch('/auth/logout', { method: 'POST' });
+      } catch (_) {}
+      window.location.href = '/';
     }
 
     /* ══════════════════════════════════════════
@@ -632,7 +630,7 @@
           body: JSON.stringify({
             difficulty:  diff.value,
             waitingTime: parseInt(wait.textContent),
-            googleId:    currentUser.googleId
+            googleId:    currentUser.googleId   // now correctly populated
           })
         });
 
@@ -642,7 +640,6 @@
           btn.textContent = `✓  Room ${data.roomCode} — redirecting...`;
           btn.style.background = 'linear-gradient(135deg, #059669, #047857)';
 
-          // Store waiting time so contest.html can show the lobby countdown
           sessionStorage.setItem(
             `waitingTimeLeft_${data.roomCode}`,
             data.waitingTime * 60 * 1000
@@ -671,6 +668,7 @@
       setTimeout(() => {
         el.textContent = '⚡  Create Room';
         el.style.background = '';
+        el.disabled = false;
       }, 1800);
     }
 
@@ -704,7 +702,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             code:     val,
-            googleId: currentUser.googleId
+            googleId: currentUser.googleId   // now correctly populated
           })
         });
 
@@ -719,7 +717,6 @@
           const secsLeft = Math.floor((data.waitingTimeLeftMs || 0) / 1000);
           hint.textContent = `✓  Joined! ${secsLeft}s left in lobby — redirecting...`;
 
-          // Store waiting time for contest.html countdown
           sessionStorage.setItem(
             `waitingTimeLeft_${val}`,
             data.waitingTimeLeftMs || 0
