@@ -1,5 +1,5 @@
 import express from "express";
-import redis from "./redisconnection.js";    // was missing in original
+import redis from "./redisconnection.js";
 
 const router = express.Router();
 
@@ -41,9 +41,16 @@ router.get("/problems", async (req, res) => {
       title:       p.title,
       difficulty:  p.difficulty,
       description: p.description,
-      examples:    p.examples,
-      constraints: p.constraints,
-      snippets:    p.snippets,
+
+      // examples array (inputs) + exampleoutput array (outputs) are separate
+      // in the schema — zip them together into { input, output } objects
+      examples: (p.examples || []).map((input, idx) => ({
+        input:  input,
+        output: (p.exampleoutput || [])[idx] ?? 'N/A',
+      })),
+
+      constraints: p.constraints || [],
+      snippets:    p.snippets    || {},
     }));
 
     res.json({
