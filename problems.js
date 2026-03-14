@@ -97,9 +97,12 @@ router.get("/problems", async (req, res) => {
     });
 
     res.json({
-      success:         true,
-      roomCode:        sanitizedCode,
-      contestDuration: parsedRoom.contestDuration,
+      success:          true,
+      roomCode:         sanitizedCode,
+      contestDuration:  parsedRoom.contestDuration,
+      contestStartTime: parsedRoom.contestStartTime || null,   // set by new createroom.js
+      createdAt:        parsedRoom.createdAt        || null,   // fallback for old rooms
+      waitingTime:      parsedRoom.waitingTime      || null,   // fallback for old rooms
       problems,
     });
 
