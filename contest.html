@@ -93,7 +93,7 @@
 
     .timer-val { color: var(--purple-xlight); font-weight: 600; }
 
-    /* Waiting banner */
+    /* ── WAITING BANNER ── */
     .waiting-banner {
       display: none;
       position: fixed; inset: 0; z-index: 500;
@@ -102,22 +102,55 @@
       align-items: center; justify-content: center;
     }
     .waiting-banner.show { display: flex; }
+
     .waiting-box {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 40px 36px;
       text-align: center;
-      width: 360px;
+      width: 400px;
       box-shadow: 0 24px 80px rgba(0,0,0,0.6);
     }
+
     .waiting-icon { font-size: 40px; margin-bottom: 14px; }
+
     .waiting-title {
       font-family: 'Fira Code', monospace;
       font-size: 20px; font-weight: 700;
-      color: #f1f5f9; margin-bottom: 8px;
+      color: #f1f5f9; margin-bottom: 6px;
     }
-    .waiting-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; }
+
+    .waiting-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+
+    /* Room code share block inside waiting banner */
+    .waiting-room-code-block {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.35);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+      user-select: none;
+    }
+    .waiting-room-code-block:hover { background: rgba(124,58,237,0.22); }
+
+    .waiting-room-code-val {
+      font-family: 'Fira Code', monospace;
+      font-size: 28px; font-weight: 700;
+      color: var(--purple-xlight);
+      letter-spacing: 6px;
+    }
+
+    .waiting-copy-hint {
+      font-family: 'Fira Code', monospace;
+      font-size: 10px; color: var(--muted);
+      margin-bottom: 20px;
+    }
+
     .waiting-countdown {
       font-family: 'Fira Code', monospace;
       font-size: 48px; font-weight: 700;
@@ -125,11 +158,22 @@
       text-shadow: 0 0 30px var(--purple-glow);
       margin-bottom: 16px;
     }
+
     .waiting-players {
       font-family: 'Fira Code', monospace;
       font-size: 12px; color: var(--muted);
     }
     .waiting-players span { color: var(--green); }
+
+    .copy-toast-banner {
+      position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+      background: rgba(16,185,129,0.9);
+      color: #fff; font-family: 'Fira Code', monospace; font-size: 10px;
+      padding: 3px 10px; border-radius: 5px;
+      white-space: nowrap; pointer-events: none;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .copy-toast-banner.show { opacity: 1; }
 
     .topbar-center {
       display: flex; align-items: center; gap: 10px;
@@ -494,7 +538,7 @@
       color: var(--text); font-family: 'Fira Code', monospace;
       font-size: 13px; line-height: 21px; tab-size: 4;
       width: 100%; height: 100%;
-      caret-color: var(--purple-light); spellcheck: false;
+      caret-color: var(--purple-light);
     }
     .code-textarea::selection { background: rgba(124,58,237,0.3); }
 
@@ -518,9 +562,9 @@
       font-size: 10px; font-family: 'Fira Code', monospace;
       padding: 2px 8px; border-radius: 5px;
     }
-    .status-running { background: rgba(245,158,11,0.15); color: var(--medium); border: 1px solid rgba(245,158,11,0.3); }
-    .status-accepted { background: rgba(16,185,129,0.15); color: var(--easy); border: 1px solid rgba(16,185,129,0.3); }
-    .status-error { background: rgba(239,68,68,0.15); color: var(--hard); border: 1px solid rgba(239,68,68,0.3); }
+    .status-running  { background: rgba(245,158,11,0.15); color: var(--medium); border: 1px solid rgba(245,158,11,0.3); }
+    .status-accepted { background: rgba(16,185,129,0.15); color: var(--easy);   border: 1px solid rgba(16,185,129,0.3); }
+    .status-error    { background: rgba(239,68,68,0.15);  color: var(--hard);   border: 1px solid rgba(239,68,68,0.3); }
 
     .output-close { cursor: pointer; color: var(--muted); font-size: 16px; line-height: 1; transition: color 0.15s; }
     .output-close:hover { color: var(--text); }
@@ -544,13 +588,25 @@
 
 <!-- ══════════════════════════════════
      WAITING ROOM BANNER
-     Shown while waitingTime window is open
 ══════════════════════════════════ -->
 <div class="waiting-banner" id="waitingBanner">
   <div class="waiting-box">
     <div class="waiting-icon">⏳</div>
     <div class="waiting-title">Waiting for players</div>
-    <div class="waiting-sub">Contest starts when the lobby closes</div>
+    <div class="waiting-sub">Share this code with your friend to join</div>
+
+    <!-- Copyable room code -->
+    <div class="waiting-room-code-block" onclick="copyRoomCode(true)">
+      <span class="waiting-room-code-val" id="waitingRoomCodeDisplay">------</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      <div class="copy-toast-banner" id="copyToastBanner">Copied!</div>
+    </div>
+
+    <div class="waiting-copy-hint">click to copy · share with friends</div>
     <div class="waiting-countdown" id="waitingCountdown">0:00</div>
     <div class="waiting-players">
       <span id="waitingPlayerCount">1</span> player(s) in room
@@ -570,9 +626,9 @@
 
   <div class="topbar-center">
     <select class="lang-select" id="langSelect">
+      <option value="python">Python 3</option>
       <option value="cpp">C++17</option>
       <option value="java">Java 17</option>
-      <option value="python">Python 3</option>
     </select>
     <button class="btn-run" id="runBtn" onclick="runCode()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
@@ -582,14 +638,16 @@
   </div>
 
   <div class="topbar-right">
-    <div class="room-code-wrap" onclick="copyRoomCode()" title="Copy room code">
+    <!-- Copyable room code in topbar -->
+    <div class="room-code-wrap" onclick="copyRoomCode(false)" title="Click to copy room code">
       <span class="room-code-label">Room</span>
       <span class="room-code-val" id="roomCodeDisplay">------</span>
       <svg class="copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2v1"/>
       </svg>
       <div class="copy-toast" id="copyToast">Copied!</div>
     </div>
+
     <div class="lb-toggle-btn" id="lbToggleBtn" onclick="toggleLeaderboard()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
@@ -681,47 +739,33 @@
   ════════════════════════════════════════════════ */
   const ROOM_CODE = new URLSearchParams(window.location.search).get('room') || '';
   if (!ROOM_CODE) {
-    // No room code in URL — send back to home
     window.location.href = '/';
   }
-  document.getElementById('roomCodeDisplay').textContent = ROOM_CODE;
+  document.getElementById('roomCodeDisplay').textContent      = ROOM_CODE;
+  document.getElementById('waitingRoomCodeDisplay').textContent = ROOM_CODE;
 
   /* ════════════════════════════════════════════════
      STATE
   ════════════════════════════════════════════════ */
   let allProblems          = [];
   let currentProblemIndex  = 0;
-  let contestTimerSecs     = 0;   // counts DOWN during contest
+  let contestTimerSecs     = 0;
   let contestTimerInterval = null;
   let waitingInterval      = null;
   let isInWaitingPhase     = true;
 
   /* ════════════════════════════════════════════════
-     FETCH PROBLEMS + TIMER from /problems?room=CODE
-     Backend returns:
-       {
-         success: true,
-         problems: [...],
-         contestDuration: <seconds>,   // total contest time
-         roomCode: "XXXXXX"
-       }
-     We compute the waiting phase client-side using
-     the waitingTimeLeftMs returned from /joinroom,
-     stored in sessionStorage by home.html.
+     FETCH PROBLEMS
   ════════════════════════════════════════════════ */
   async function fetchAllProblems() {
     try {
       const res = await fetch(`/problems?room=${ROOM_CODE}`);
       if (!res.ok) throw new Error('fetch failed');
       const data = await res.json();
-
       if (!data.success) throw new Error(data.error || 'fetch failed');
-
       allProblems      = data.problems;
-      contestTimerSecs = data.contestDuration;  // e.g. 3600 / 5400 / 7200
-
+      contestTimerSecs = data.contestDuration;
     } catch(e) {
-      // Fallback: demo data so the UI isn't broken during dev
       console.warn('[contest] Problem fetch failed, using demo data:', e.message);
       allProblems      = DEMO_PROBLEMS;
       contestTimerSecs = 3600;
@@ -735,19 +779,14 @@
 
   /* ════════════════════════════════════════════════
      PHASE LOGIC
-     home.html stores waitingTimeLeftMs in
-     sessionStorage after a successful join/create.
-     If missing we just skip straight to contest.
   ════════════════════════════════════════════════ */
   function startPhaseLogic() {
-    const stored = sessionStorage.getItem(`waitingTimeLeft_${ROOM_CODE}`);
+    const stored    = sessionStorage.getItem(`waitingTimeLeft_${ROOM_CODE}`);
     const waitingMs = stored ? parseInt(stored) : 0;
 
     if (waitingMs > 0) {
-      // Still inside the waiting window
       showWaitingBanner(waitingMs);
     } else {
-      // Waiting window already passed — go straight to contest
       startContest();
     }
   }
@@ -766,23 +805,16 @@
         startContest();
         return;
       }
-
       const totalSecs = Math.ceil(remainingMs / 1000);
       const m = Math.floor(totalSecs / 60);
       const s = totalSecs % 60;
       document.getElementById('waitingCountdown').textContent =
         `${m}:${String(s).padStart(2,'0')}`;
-
-      // Optionally poll player count here via WebSocket or polling
-      // fetchPlayerCount();
-
       remainingMs -= 1000;
     }
 
-    tick(); // run immediately
+    tick();
     waitingInterval = setInterval(tick, 1000);
-
-    // Clear stored value so refreshing doesn't re-trigger
     sessionStorage.removeItem(`waitingTimeLeft_${ROOM_CODE}`);
   }
 
@@ -804,9 +836,9 @@
         return;
       }
       contestTimerSecs--;
-      const h = String(Math.floor(contestTimerSecs / 3600)).padStart(2,'0');
-      const m = String(Math.floor((contestTimerSecs % 3600) / 60)).padStart(2,'0');
-      const s = String(contestTimerSecs % 60).padStart(2,'0');
+      const h  = String(Math.floor(contestTimerSecs / 3600)).padStart(2,'0');
+      const m  = String(Math.floor((contestTimerSecs % 3600) / 60)).padStart(2,'0');
+      const s  = String(contestTimerSecs % 60).padStart(2,'0');
       const el = document.getElementById('timerVal');
       el.textContent = `${h}:${m}:${s}`;
       if (contestTimerSecs < 300)      el.style.color = 'var(--hard)';
@@ -819,10 +851,35 @@
   }
 
   function onContestEnd() {
-    // You can redirect to a results page here
-    // window.location.href = `/results?room=${ROOM_CODE}`;
-    document.getElementById('timerVal').style.color = 'var(--hard)';
-    document.getElementById('timerVal').textContent  = 'ENDED';
+    document.getElementById('timerVal').style.color    = 'var(--hard)';
+    document.getElementById('timerVal').textContent    = 'ENDED';
+  }
+
+  /* ════════════════════════════════════════════════
+     COPY ROOM CODE
+     fromBanner = true  → show toast on waiting box
+     fromBanner = false → show toast on topbar
+  ════════════════════════════════════════════════ */
+  function copyRoomCode(fromBanner) {
+    navigator.clipboard.writeText(ROOM_CODE).catch(() => {
+      // fallback for browsers that block clipboard
+      const ta = document.createElement('textarea');
+      ta.value = ROOM_CODE;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+
+    if (fromBanner) {
+      const t = document.getElementById('copyToastBanner');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 1600);
+    } else {
+      const t = document.getElementById('copyToast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 1600);
+    }
   }
 
   /* ════════════════════════════════════════════════
@@ -834,7 +891,7 @@
     currentProblemIndex = next;
 
     const content = document.getElementById('problemContent');
-    content.style.opacity = '0';
+    content.style.opacity    = '0';
     content.style.transition = 'opacity 0.18s ease';
     setTimeout(() => {
       renderProblem(allProblems[currentProblemIndex]);
@@ -842,7 +899,6 @@
     }, 180);
 
     updateNavButtons();
-    // Clear editor when switching problems
     document.getElementById('codeEditor').value = '';
     updateLineNumbers();
   }
@@ -855,9 +911,10 @@
   }
 
   function renderProblem(data) {
+    if (!data) return;
     const badge = document.getElementById('problemBadge');
     badge.textContent = data.difficulty.charAt(0).toUpperCase() + data.difficulty.slice(1);
-    badge.className = `problem-badge badge-${data.difficulty}`;
+    badge.className   = `problem-badge badge-${data.difficulty}`;
     document.getElementById('problemNum').textContent = `#${data.number}`;
 
     let html = `<div class="problem-title">${data.title}</div>`;
@@ -881,23 +938,20 @@
 
     document.getElementById('problemContent').innerHTML = html;
 
-    // Set code snippet
-    const lang = document.getElementById('langSelect').value;
+    const lang   = document.getElementById('langSelect').value;
     const editor = document.getElementById('codeEditor');
-    if (data.snippets) {
-      editor.value = data.snippets[lang] || `// Solution for: ${data.title}\n`;
-      updateLineNumbers();
-    }
+    editor.value = data.snippets?.[lang] || `// Solution for: ${data.title}\n`;
+    updateLineNumbers();
   }
 
   /* ════════════════════════════════════════════════
-     LEADERBOARD (mock — replace with WebSocket/poll)
+     LEADERBOARD
   ════════════════════════════════════════════════ */
   const MOCK_LEADERBOARD = [
-    { name: 'you', score: 1480, solved: 2, avatar: '#7c3aed', me: true },
+    { name: 'you',         score: 1480, solved: 2, avatar: '#7c3aed', me: true },
     { name: 'ninja_coder', score: 1920, solved: 3, avatar: '#0ea5e9' },
-    { name: 'algomaster', score: 1750, solved: 3, avatar: '#f59e0b' },
-    { name: 'bytewizard', score: 1650, solved: 2, avatar: '#10b981' },
+    { name: 'algomaster',  score: 1750, solved: 3, avatar: '#f59e0b' },
+    { name: 'bytewizard',  score: 1650, solved: 2, avatar: '#10b981' },
   ];
 
   function renderLeaderboard() {
@@ -905,7 +959,7 @@
     document.getElementById('lbCount').textContent = `${sorted.length} participants`;
     const list = document.getElementById('lbList');
     list.innerHTML = sorted.map((p, i) => {
-      const rank = i + 1;
+      const rank    = i + 1;
       const rankCls = rank <= 3 ? `rank-${rank}` : 'rank-other';
       const rankStr = rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank;
       return `<div class="lb-item ${p.me ? 'me' : ''}">
@@ -928,22 +982,12 @@
   }
 
   /* ════════════════════════════════════════════════
-     COPY ROOM CODE
-  ════════════════════════════════════════════════ */
-  function copyRoomCode() {
-    navigator.clipboard.writeText(ROOM_CODE).catch(() => {});
-    const toast = document.getElementById('copyToast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 1600);
-  }
-
-  /* ════════════════════════════════════════════════
      CODE EDITOR
   ════════════════════════════════════════════════ */
   function updateLineNumbers() {
-    const ta = document.getElementById('codeEditor');
+    const ta    = document.getElementById('codeEditor');
     const lines = ta.value.split('\n').length;
-    const ln = document.getElementById('lineNumbers');
+    const ln    = document.getElementById('lineNumbers');
     let html = '';
     for (let i = 1; i <= lines; i++) html += `<div class="line-num">${i}</div>`;
     ln.innerHTML = html;
@@ -967,7 +1011,6 @@
   document.getElementById('langSelect').addEventListener('change', function() {
     const ext = { cpp:'cpp', java:'java', python:'py' };
     document.getElementById('activeTab').textContent = `solution.${ext[this.value] || 'txt'}`;
-    // Also reload snippet for current problem in new language
     if (allProblems[currentProblemIndex]) {
       const snippets = allProblems[currentProblemIndex].snippets;
       if (snippets) {
@@ -988,14 +1031,14 @@
       ta.value = `# Custom test case\n# Input:\n\n# Expected Output:\n`;
     } else {
       const lang = document.getElementById('langSelect').value;
-      const p = allProblems[currentProblemIndex];
-      ta.value = p?.snippets?.[lang] || '';
+      const p    = allProblems[currentProblemIndex];
+      ta.value   = p?.snippets?.[lang] || '';
     }
     updateLineNumbers();
   }
 
   /* ════════════════════════════════════════════════
-     RUN CODE  →  POST /run
+     RUN CODE
   ════════════════════════════════════════════════ */
   async function runCode() {
     const code = document.getElementById('codeEditor').value;
@@ -1010,7 +1053,7 @@
     statusEl.textContent = 'Running...';
     bodyEl.innerHTML     = '<span class="out-info">⏳ Executing against test cases...</span>';
 
-    btn.disabled    = true;
+    btn.disabled      = true;
     btn.style.opacity = '0.7';
 
     try {
@@ -1024,12 +1067,10 @@
           problem:  allProblems[currentProblemIndex]?.number
         })
       });
-
       if (!res.ok) throw new Error('Server error');
       const data = await res.json();
       renderOutput(data);
     } catch(e) {
-      // Demo output while /run is not yet implemented
       renderOutput({
         status: 'accepted', passed: 2, total: 2,
         runtime: '48ms', memory: '16.8MB',
@@ -1077,7 +1118,7 @@
   }
 
   /* ════════════════════════════════════════════════
-     SUBMIT CODE  →  POST /submit
+     SUBMIT CODE
   ════════════════════════════════════════════════ */
   async function submitCode() {
     const code = document.getElementById('codeEditor').value;
@@ -1094,7 +1135,7 @@
         })
       });
     } catch(e) {}
-    runCode(); // also show run output
+    runCode();
   }
 
   /* ════════════════════════════════════════════════
@@ -1108,7 +1149,7 @@
   divider.addEventListener('mousedown', e => {
     dragging = true; startX = e.clientX; startW = paneLeft.offsetWidth;
     divider.classList.add('dragging');
-    document.body.style.cursor = 'col-resize';
+    document.body.style.cursor     = 'col-resize';
     document.body.style.userSelect = 'none';
   });
 
@@ -1123,7 +1164,7 @@
     if (!dragging) return;
     dragging = false;
     divider.classList.remove('dragging');
-    document.body.style.cursor = '';
+    document.body.style.cursor     = '';
     document.body.style.userSelect = '';
   });
 
