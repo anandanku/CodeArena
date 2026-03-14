@@ -109,11 +109,12 @@ router.post("/createroom", async (req, res) => {
     const roomData = {
       roomCode,
       difficulty,
-      waitingTime:     parsedWait,
+      waitingTime:      parsedWait,
       contestDuration,
-      players:         [googleId],       // creator is first player
-      problems,
-      createdAt:       Date.now(),
+      players:          [googleId],
+      problems,                                               // raw from MongoDB
+      createdAt:        Date.now(),
+      contestStartTime: Date.now() + (waitingSeconds * 1000), // ← contest starts after waiting window
     };
 
     await redis.set(
@@ -122,21 +123,13 @@ router.post("/createroom", async (req, res) => {
       { EX: totalTTL }
     );
 
+    // problems not included in response — frontend fetches via /problems
     res.status(201).json({
       success:         true,
       roomCode,
       difficulty,
       waitingTime:     parsedWait,
       contestDuration,
-      problems:        problems.map((p, i) => ({
-        number:      i + 1,
-        title:       p.title,
-        difficulty:  p.difficulty,
-        description: p.description,
-        examples:    p.examples,
-        constraints: p.constraints,
-        snippets:    p.snippets,
-      })),
     });
 
   } catch (err) {
