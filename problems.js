@@ -3,44 +3,40 @@ import redis from "./redisconnection.js";
 
 const router = express.Router();
 
-// ── Safely stringify any value from MongoDB ──────────────────────
-// string/number  → returned as string
-// array          → elements joined by newline (nulls filtered out)
-// null/undefined/empty → returns null (signals "skip this entry")
-function normalize(val) {
-  if (val === null || val === undefined || val === '') return null;
-  if (Array.isArray(val)) {
-    const cleaned = val
-      .filter(v => v !== null && v !== undefined && v !== '')
-      .map(String);
-    return cleaned.length > 0 ? cleaned.join('\n') : null;
-  }
-  return String(val);
-}
+// ── Convert ANY value into a clean readable string ────────────────
+// Handles:
+//   "hello"              → "hello"
+//   42                   → "42"
+//   ["a", "b"]           → "a\nb"           (1D array)
+//   [["a","b"],["c","d"]]→ "a b\nc d"       (2D array)
+//   [["1",2], "three"]   → "1 2\nthree"     (mixed)
+//   null / undefined     → ""
+function toString(val) {
+  if (val === null || val === undefined) return "";
 
-// ── Zip two parallel arrays into { input, output } pairs ─────────
-// Skips any pair where either side is missing/empty so no "N/A"
-// or "undefined" ever reaches the frontend
-function zipCases(inputs, outputs, inputKey, outputKey) {
-  const ins  = inputs  || [];
-  const outs = outputs || [];
-  const len  = Math.max(ins.length, outs.length);
-  const result = [];
-  for (let i = 0; i < len; i++) {
-    const inp = normalize(ins[i]);
-    const out = normalize(outs[i]);
-    if (inp !== null && out !== null) {
-      result.push({ [inputKey]: inp, [outputKey]: out });
-    }
+  // plain string or number
+  if (typeof val === "string") return val;
+  if (typeof val === "number") return String(val);
+
+  // 1D array
+  if (Array.isArray(val)) {
+    return val.map(item => {
+      // each item in the array could itself be an array (2D)
+      if (Array.isArray(item)) {
+        return item.map(v => (v === null || v === undefined ? "" : String(v))).join(" ");
+      }
+      return (item === null || item === undefined) ? "" : String(item);
+    }).join("\n");
   }
-  return result;
+
+  // fallback for objects etc.
+  return JSON.stringify(val);
 }
 
 router.get("/problems", async (req, res) => {
   try {
     const { room } = req.query;
 
-    // ── Validate query param ─────────────────────────────────
     if (!room) {
       return res.status(400).json({
         success: false,
@@ -57,7 +53,6 @@ router.get("/problems", async (req, res) => {
       });
     }
 
-    // ── Fetch room ───────────────────────────────────────────
     const roomData = await redis.get(`room:${sanitizedCode}`);
 
     if (!roomData) {
@@ -69,22 +64,37 @@ router.get("/problems", async (req, res) => {
 
     const parsedRoom = JSON.parse(roomData);
 
-    const problems = parsedRoom.problems.map((p, i) => ({
-      number:      i + 1,
-      title:       p.title,
-      difficulty:  p.difficulty,
-      description: p.description,
-      constraints: p.constraints || [],
-      snippets:    p.snippets    || {},
+    const problems = parsedRoom.problems.map((p, i) => {
 
-      // examples[]      = inputs,  exampleoutput[] = outputs
-      // Only pairs where BOTH input and output exist are included
-      examples: zipCases(p.examples, p.exampleoutput, 'input', 'output'),
+      // ── Iterate examples[] and exampleoutput[] ────────────────
+      const examples = [];
+      for (let j = 0; j < (p.examples || []).length; j++) {
+        examples.push({
+          input:  toString(p.examples[j]),
+          output: toString((p.exampleoutput || [])[j]),
+        });
+      }
 
-      // testcases[]     = inputs,  output[] = expected outputs
-      // Only pairs where BOTH exist are included — nulls skipped automatically
-      testcases: zipCases(p.testcases, p.output, 'input', 'expected'),
-    }));
+      // ── Iterate testcases[] and output[] ─────────────────────
+      const testcases = [];
+      for (let j = 0; j < (p.testcases || []).length; j++) {
+        testcases.push({
+          input:    toString(p.testcases[j]),
+          expected: toString((p.output || [])[j]),
+        });
+      }
+
+      return {
+        number:      i + 1,
+        title:       p.title,
+        difficulty:  p.difficulty,
+        description: p.description,
+        constraints: p.constraints || [],
+        snippets:    p.snippets    || {},
+        examples,
+        testcases,
+      };
+    });
 
     res.json({
       success:         true,
