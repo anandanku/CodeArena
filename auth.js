@@ -97,10 +97,21 @@ router.get("/auth/me", (req, res) => {
   if (!req.isAuthenticated || !req.isAuthenticated()) {
     return res.status(401).json({ authenticated: false, user: null });
   }
-  return res.status(200).json({ authenticated: true, user: req.user });
+  const u = req.user;
+  return res.status(200).json({
+    authenticated: true,
+    user: {
+      GoogleId:    u.GoogleId,      // keep consistent casing
+      googleId:    u.GoogleId,      // alias so frontend works
+      name:        u.displayname,
+      email:       u.email,
+      photoURL:    u.avatar,
+    }
+  });
 });
 
 export default router;
+
 
 
 
