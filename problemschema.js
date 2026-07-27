@@ -46,6 +46,9 @@ const problemSchema = new mongoose.Schema({
   output: {
     type: [mongoose.Schema.Types.Mixed],
     required: true
+  },
+  snippet:{
+    type:string
   }
 });
 
