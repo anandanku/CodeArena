@@ -48,7 +48,7 @@ const problemSchema = new mongoose.Schema({
     required: true
   },
   snippet:{
-    type:string
+    type: String
   }
 });
 
