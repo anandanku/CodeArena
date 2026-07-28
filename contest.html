@@ -512,9 +512,7 @@
       Submit
     </button>
     <select class="lang-select" id="langSelect" onchange="onLangChange()">
-      <option value="python">Python 3</option>
       <option value="cpp">C++17</option>
-      <option value="java">Java 17</option>
     </select>
   </div>
 
@@ -622,8 +620,8 @@
 
   require(['vs/editor/editor.main'], function() {
     monacoEditor = monaco.editor.create(document.getElementById('monacoContainer'), {
-      value:             '# Write your solution here...',
-      language:          'python',
+      value:             '',
+      language:          'cpp',
       theme:             'vs-dark',
       fontSize:          13,
       fontFamily:        "'Fira Code', monospace",
@@ -668,8 +666,8 @@
   /* ════════════════════════════════════════════════
      LANGUAGE → MONACO LANGUAGE MAP
   ════════════════════════════════════════════════ */
-  const LANG_MAP = { python: 'python', cpp: 'cpp', java: 'java' };
-  const EXT_MAP  = { python: 'py',     cpp: 'cpp', java: 'java' };
+  const LANG_MAP = { cpp: 'cpp' };
+  const EXT_MAP  = { cpp: 'cpp' };
 
   function onLangChange() {
     const lang = document.getElementById('langSelect').value;
@@ -869,12 +867,10 @@
     html += `<div style="height:32px"></div>`;
     document.getElementById('problemContent').innerHTML = html;
 
-    // Load snippet into Monaco
+    // Load C++ snippet into Monaco
     if (monacoEditor) {
-      const lang = document.getElementById('langSelect').value;
-      monacoEditor.setValue(data.snippets?.[lang] || '');
-      // Update tab label
-      document.getElementById('activeTab').textContent = `solution.${EXT_MAP[lang]}`;
+      monacoEditor.setValue(data.snippet || '');
+      document.getElementById('activeTab').textContent = 'solution.cpp';
     }
   }
 
