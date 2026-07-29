@@ -86,7 +86,7 @@ app.use("/auth", authRouter);
 app.use("/createroom", createRoomRouter);
 
 /* Join room */
-app.use("/", joinRoomRouter);
+app.use("/joinroom", joinRoomRouter);
 
 /* Fetch contest problems */
 app.use("/", problemsRouter);
