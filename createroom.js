@@ -20,7 +20,7 @@ function getContestDuration(difficulty) {
   return 3600;
 }
 
-router.post("/createroom", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { difficulty, waitingTime, googleId } = req.body;
 
