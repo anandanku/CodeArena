@@ -929,10 +929,8 @@
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          code,
-          language: lang,
-          room:     ROOM_CODE,
-          problem:  allProblems[currentProblemIndex]?.number,
+          snippets:code,
+          language: cpp,
         })
       });
  
