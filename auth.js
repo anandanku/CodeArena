@@ -64,7 +64,7 @@ passport.use(
   )
 );
 router.get(
-  "/auth/google",
+  "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
@@ -73,7 +73,7 @@ router.get("/", (req, res) => {
 });
 
 router.get(
-  "/auth/google/callback",
+  "/google/callback",
   passport.authenticate("google", {
     failureRedirect: process.env.LOGIN_FAIL_REDIRECT || "/login",
     session: true,
@@ -83,7 +83,7 @@ router.get(
   }
 );
 
-router.post("/auth/logout", (req, res, next) => {
+router.post("/logout", (req, res, next) => {
   req.logout((error) => {
     if (error) return next(error);
     req.session.destroy(() => {
@@ -93,7 +93,7 @@ router.post("/auth/logout", (req, res, next) => {
   });
 });
 
-router.get("/auth/me", (req, res) => {
+router.get("/me", (req, res) => {
   if (!req.isAuthenticated || !req.isAuthenticated()) {
     return res.status(401).json({ authenticated: false, user: null });
   }
