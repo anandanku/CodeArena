@@ -89,7 +89,7 @@ app.use("/createroom", createRoomRouter);
 app.use("/joinroom", joinRoomRouter);
 
 /* Fetch contest problems */
-app.use("/", problemsRouter);
+app.use("/problems", problemsRouter);
 
 /* ============================= */
 /* FRONTEND ROUTES */
