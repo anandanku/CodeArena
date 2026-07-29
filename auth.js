@@ -79,7 +79,7 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    res.redirect(process.env.LOGIN_SUCCESS_REDIRECT || "/dashboard");
+    res.redirect(process.env.LOGIN_SUCCESS_REDIRECT || "/home");
   }
 );
 
