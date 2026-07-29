@@ -80,7 +80,7 @@ app.use(passport.session());
 /* ============================= */
 
 /* Authentication */
-app.use("/", authRouter);
+app.use("/auth", authRouter);
 
 /* Room creation */
 app.use("/", createRoomRouter);
