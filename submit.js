@@ -6,7 +6,7 @@ dotenv.config();
 
 const router = express.Router();
 
-router.post("/submit", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const { snippets } = req.body;
 
