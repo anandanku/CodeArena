@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
     :root {
       --bg: #0a0a0f;
       --surface: rgba(14,14,24,0.95);
@@ -28,14 +28,14 @@
       --hard: #ef4444;
       --topbar-h: 52px;
     }
-
+ 
     html, body {
       height: 100%; overflow: hidden;
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
     }
-
+ 
     .bg-grid {
       position: fixed; inset: 0; z-index: 0;
       background-image:
@@ -49,7 +49,7 @@
       background: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(124,58,237,0.1) 0%, transparent 65%);
       pointer-events: none;
     }
-
+ 
     /* ── TOP BAR ── */
     .topbar {
       position: relative; z-index: 100;
@@ -83,13 +83,13 @@
       font-size: 11px; color: var(--text-dim); margin-top: 2px;
     }
     .timer-val { color: var(--purple-xlight); font-weight: 600; }
-
+ 
     /* topbar center: submit first, then lang */
     .topbar-center {
       display: flex; align-items: center; gap: 10px;
       position: absolute; left: 50%; transform: translateX(-50%);
     }
-
+ 
     .btn-submit {
       display: flex; align-items: center; gap: 7px;
       padding: 7px 20px;
@@ -112,7 +112,7 @@
     .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 24px var(--green-glow); }
     .btn-submit:active { transform: translateY(0); }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
+ 
     .lang-select {
       background: rgba(124,58,237,0.1);
       border: 1px solid var(--border);
@@ -126,7 +126,7 @@
     }
     .lang-select:hover, .lang-select:focus { border-color: var(--purple-light); color: var(--text); }
     .lang-select option { background: #1a1a2e; }
-
+ 
     .topbar-right {
       display: flex; align-items: center; gap: 10px;
       flex: 1; justify-content: flex-end;
@@ -149,7 +149,7 @@
       background: rgba(124,58,237,0.2);
       color: var(--purple-xlight);
     }
-
+ 
     /* ── WAITING BANNER ── */
     .waiting-banner {
       display: none;
@@ -220,7 +220,7 @@
       opacity: 0; transition: opacity 0.2s;
     }
     .copy-toast-banner.show { opacity: 1; }
-
+ 
     /* ── LEADERBOARD ── */
     .lb-dropdown {
       position: absolute;
@@ -300,7 +300,7 @@
       font-size: 13px; font-weight: 700; color: var(--purple-light); flex-shrink: 0;
     }
     .lb-item.me .lb-score { color: var(--green); }
-
+ 
     /* ── SPLIT LAYOUT ── */
     .split-container {
       position: relative; z-index: 1;
@@ -396,7 +396,7 @@
       border-radius: 6px; height: 14px; margin-bottom: 8px;
     }
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
+ 
     .divider {
       width: 5px; background: var(--border); cursor: col-resize;
       flex-shrink: 0; position: relative; transition: background 0.2s; z-index: 10;
@@ -408,7 +408,7 @@
       width: 3px; height: 40px; background: rgba(167,139,250,0.4); border-radius: 3px;
     }
     .divider:hover::after, .divider.dragging::after { background: rgba(167,139,250,0.8); }
-
+ 
     /* ── EDITOR PANE ── */
     .pane-editor {
       flex: 1; display: flex; flex-direction: column;
@@ -426,10 +426,10 @@
       background: rgba(124,58,237,0.18);
       color: var(--purple-xlight);
     }
-
+ 
     /* Monaco container — fills remaining pane height */
     .monaco-container { flex: 1; overflow: hidden; }
-
+ 
     /* Output pane */
     .output-pane {
       height: 0; border-top: 1px solid var(--border);
@@ -459,6 +459,7 @@
       padding: 12px 16px; font-family: 'Fira Code', monospace;
       font-size: 12px; color: var(--text-dim); line-height: 1.6;
       height: calc(200px - 40px); overflow-y: auto;
+      white-space: pre-wrap; word-break: break-word;
     }
     .output-body::-webkit-scrollbar { width: 3px; }
     .output-body::-webkit-scrollbar-thumb { background: var(--border); }
@@ -468,10 +469,10 @@
   </style>
 </head>
 <body>
-
+ 
 <div class="bg-grid"></div>
 <div class="bg-glow"></div>
-
+ 
 <!-- WAITING ROOM BANNER -->
 <div class="waiting-banner" id="waitingBanner">
   <div class="waiting-box">
@@ -494,7 +495,7 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
@@ -504,7 +505,7 @@
       <div class="contest-timer">Time left: <span class="timer-val" id="timerVal">--:--:--</span></div>
     </div>
   </div>
-
+ 
   <!-- Submit first, then language selector -->
   <div class="topbar-center">
     <button class="btn-submit" id="submitBtn" onclick="submitCode()">
@@ -515,7 +516,7 @@
       <option value="cpp">C++17</option>
     </select>
   </div>
-
+ 
   <div class="topbar-right">
     <div class="lb-toggle-btn" id="lbToggleBtn" onclick="toggleLeaderboard()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -525,7 +526,7 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- LEADERBOARD DROPDOWN -->
 <div class="lb-dropdown" id="lbDropdown">
   <div class="lb-inner">
@@ -536,10 +537,10 @@
     <div class="lb-list" id="lbList"></div>
   </div>
 </div>
-
+ 
 <!-- SPLIT CONTAINER -->
 <div class="split-container" id="splitContainer">
-
+ 
   <!-- LEFT: Problem -->
   <div class="pane-problem" id="paneLeft" style="width:42%">
     <div class="pane-problem-header">
@@ -565,9 +566,9 @@
       <div class="skeleton" style="width:100%;height:80px"></div>
     </div>
   </div>
-
+ 
   <div class="divider" id="divider"></div>
-
+ 
   <!-- RIGHT: Monaco Editor -->
   <div class="pane-editor" id="paneRight">
     <div class="editor-topbar">
@@ -575,7 +576,7 @@
     </div>
     <!-- Monaco mounts here -->
     <div class="monaco-container" id="monacoContainer"></div>
-
+ 
     <div class="output-pane" id="outputPane">
       <div class="output-header">
         <div class="output-title">
@@ -587,12 +588,12 @@
       <div class="output-body" id="outputBody"></div>
     </div>
   </div>
-
+ 
 </div>
-
+ 
 <!-- Monaco Editor loader -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
-
+ 
 <script>
   /* ════════════════════════════════════════════════
      ROOM CODE
@@ -600,7 +601,7 @@
   const ROOM_CODE = new URLSearchParams(window.location.search).get('room') || '';
   if (!ROOM_CODE) window.location.href = '/';
   document.getElementById('waitingRoomCodeDisplay').textContent = ROOM_CODE;
-
+ 
   /* ════════════════════════════════════════════════
      STATE
   ════════════════════════════════════════════════ */
@@ -610,14 +611,14 @@
   let contestTimerInterval = null;
   let waitingInterval      = null;
   let monacoEditor         = null;   // Monaco instance
-
+ 
   /* ════════════════════════════════════════════════
      MONACO INIT
   ════════════════════════════════════════════════ */
   require.config({
     paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }
   });
-
+ 
   require(['vs/editor/editor.main'], function() {
     monacoEditor = monaco.editor.create(document.getElementById('monacoContainer'), {
       value:             '',
@@ -640,7 +641,7 @@
         horizontalScrollbarSize: 6,
       },
     });
-
+ 
     // Custom dark theme matching the app palette
     monaco.editor.defineTheme('codearena-dark', {
       base:    'vs-dark',
@@ -658,34 +659,34 @@
       }
     });
     monaco.editor.setTheme('codearena-dark');
-
+ 
     // Now that Monaco is ready, fetch problems
     fetchAllProblems();
   });
-
+ 
   /* ════════════════════════════════════════════════
      LANGUAGE → MONACO LANGUAGE MAP
   ════════════════════════════════════════════════ */
   const LANG_MAP = { cpp: 'cpp' };
   const EXT_MAP  = { cpp: 'cpp' };
-
+ 
   function onLangChange() {
     const lang = document.getElementById('langSelect').value;
     document.getElementById('activeTab').textContent = `solution.${EXT_MAP[lang]}`;
-
+ 
     // Switch Monaco language
     if (monacoEditor) {
       const model = monacoEditor.getModel();
       if (model) monaco.editor.setModelLanguage(model, LANG_MAP[lang]);
     }
-
+ 
     // Load snippet for current problem in new language
     const p = allProblems[currentProblemIndex];
     if (p?.snippets && monacoEditor) {
       monacoEditor.setValue(p.snippets[lang] || '');
     }
   }
-
+ 
   /* ════════════════════════════════════════════════
      FETCH PROBLEMS + TIMING FROM SERVER
   ════════════════════════════════════════════════ */
@@ -695,10 +696,10 @@
       if (!res.ok) throw new Error('fetch failed');
       const data = await res.json();
       if (!data.success) throw new Error(data.error || 'fetch failed');
-
+ 
       allProblems             = data.problems;
       window._contestDuration = data.contestDuration || 3600;
-
+ 
       if (data.contestStartTime) {
         window._contestStartTime = data.contestStartTime;
       } else if (data.createdAt && data.waitingTime) {
@@ -706,20 +707,20 @@
       } else {
         window._contestStartTime = Date.now() - 1000;
       }
-
+ 
     } catch(e) {
       console.warn('[contest] Problem fetch failed:', e.message);
       allProblems              = [];
       window._contestDuration  = 3600;
       window._contestStartTime = Date.now() - 1000;
     }
-
+ 
     currentProblemIndex = 0;
     if (allProblems.length > 0) renderProblem(allProblems[0]);
     updateNavButtons();
     startPhaseLogic();
   }
-
+ 
   /* ════════════════════════════════════════════════
      PHASE LOGIC
   ════════════════════════════════════════════════ */
@@ -727,7 +728,7 @@
     const now            = Date.now();
     const startTime      = window._contestStartTime;
     const endTime        = startTime + (window._contestDuration * 1000);
-
+ 
     if (now < startTime) {
       showWaitingBanner(startTime - now);
     } else if (now < endTime) {
@@ -737,11 +738,11 @@
       onContestEnd();
     }
   }
-
+ 
   function showWaitingBanner(waitingMs) {
     document.getElementById('waitingBanner').classList.add('show');
     let remainingMs = waitingMs;
-
+ 
     function tick() {
       if (remainingMs <= 0) {
         clearInterval(waitingInterval);
@@ -761,10 +762,10 @@
     tick();
     waitingInterval = setInterval(tick, 1000);
   }
-
+ 
   function startContest() {
     document.getElementById('waitingBanner').classList.remove('show');
-
+ 
     function tick() {
       if (contestTimerSecs <= 0) {
         clearInterval(contestTimerInterval);
@@ -785,13 +786,13 @@
     tick();
     contestTimerInterval = setInterval(tick, 1000);
   }
-
+ 
   function onContestEnd() {
     document.getElementById('timerVal').style.color = 'var(--hard)';
     document.getElementById('timerVal').textContent = 'ENDED';
     document.getElementById('submitBtn').disabled   = true;
   }
-
+ 
   /* ════════════════════════════════════════════════
      COPY ROOM CODE
   ════════════════════════════════════════════════ */
@@ -808,7 +809,7 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 1600);
   }
-
+ 
   /* ════════════════════════════════════════════════
      PROBLEM NAVIGATION
   ════════════════════════════════════════════════ */
@@ -825,7 +826,7 @@
     }, 180);
     updateNavButtons();
   }
-
+ 
   function updateNavButtons() {
     const total = allProblems.length;
     document.getElementById('prevBtn').classList.toggle('disabled', currentProblemIndex === 0);
@@ -833,18 +834,18 @@
     document.getElementById('problemProgress').textContent =
       total > 0 ? `${currentProblemIndex + 1} / ${total}` : '— / —';
   }
-
+ 
   function renderProblem(data) {
     if (!data) return;
     const badge = document.getElementById('problemBadge');
     badge.textContent = data.difficulty.charAt(0).toUpperCase() + data.difficulty.slice(1);
     badge.className   = `problem-badge badge-${data.difficulty}`;
     document.getElementById('problemNum').textContent = `#${data.number}`;
-
+ 
     let html = `<div class="problem-title">${data.title}</div>`;
     html += `<div class="problem-section-label">Description</div>`;
     html += `<div class="problem-desc">${data.description.replace(/\n/g,'<br/>')}</div>`;
-
+ 
     if (data.examples && data.examples.length > 0) {
       html += `<div class="problem-section-label">Examples</div>`;
       data.examples.forEach((ex, i) => {
@@ -856,24 +857,24 @@
         </div>`;
       });
     }
-
+ 
     if (data.constraints && data.constraints.length > 0) {
       html += `<div class="problem-section-label">Constraints</div>`;
       html += `<ul class="constraints-list">`;
       data.constraints.forEach(c => { html += `<li>${c}</li>`; });
       html += `</ul>`;
     }
-
+ 
     html += `<div style="height:32px"></div>`;
     document.getElementById('problemContent').innerHTML = html;
-
+ 
     // Load C++ snippet into Monaco
     if (monacoEditor) {
       monacoEditor.setValue(data.snippets || '');
       document.getElementById('activeTab').textContent = 'solution.cpp';
     }
   }
-
+ 
   /* ════════════════════════════════════════════════
      LEADERBOARD
   ════════════════════════════════════════════════ */
@@ -893,29 +894,38 @@
       btn.classList.remove('active');
     }
   });
-
+ 
   /* ════════════════════════════════════════════════
      SUBMIT CODE
+     - Reads the CURRENT contents of the Monaco editor
+       (i.e. whatever the user has typed/edited)
+     - POSTs it to /submition
+     - Renders the raw JSON response in the sliding
+       output panel (lower-right corner)
   ════════════════════════════════════════════════ */
   async function submitCode() {
     if (!monacoEditor) return;
-    const code = monacoEditor.getValue().trim();
+ 
+    // Always pull the latest value straight from Monaco,
+    // so any edits the user made are included.
+    const code = monacoEditor.getValue();
     const lang = document.getElementById('langSelect').value;
     const btn  = document.getElementById('submitBtn');
-
-    if (!code) return;
-
-    document.getElementById('outputPane').classList.add('open');
-    const statusEl = document.getElementById('outputStatus');
-    const bodyEl   = document.getElementById('outputBody');
-
+ 
+    if (!code.trim()) return;
+ 
+    const outputPane = document.getElementById('outputPane');
+    const statusEl   = document.getElementById('outputStatus');
+    const bodyEl      = document.getElementById('outputBody');
+ 
+    outputPane.classList.add('open');
     statusEl.className   = 'output-status status-running';
     statusEl.textContent = 'Submitting...';
-    bodyEl.innerHTML     = '<span class="out-info">⏳ Running against test cases...</span>';
+    bodyEl.textContent    = 'Sending submission...';
     btn.disabled = true;
-
+ 
     try {
-      const res = await fetch('/submit', {
+      const res = await fetch('/submition', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -925,52 +935,42 @@
           problem:  allProblems[currentProblemIndex]?.number,
         })
       });
-      if (!res.ok) throw new Error(`Server error ${res.status}`);
-      const data = await res.json();
-      renderOutput(data);
+ 
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseErr) {
+        // Response wasn't valid JSON — show raw text instead
+        const raw = await res.text().catch(() => '');
+        throw new Error(`Invalid JSON response (status ${res.status}): ${raw}`);
+      }
+ 
+      renderOutput(data, res.ok);
     } catch(e) {
       statusEl.className   = 'output-status status-error';
       statusEl.textContent = 'Error';
-      bodyEl.innerHTML     = `<span class="out-fail">⚠ ${e.message}</span>`;
+      bodyEl.textContent   = `⚠ ${e.message}`;
     }
-
+ 
     btn.disabled = false;
   }
-
-  function renderOutput(data) {
+ 
+  // Displays the raw JSON response from /submition in the output panel
+  function renderOutput(data, ok) {
     const statusEl = document.getElementById('outputStatus');
     const bodyEl   = document.getElementById('outputBody');
-    const allPass  = data.passed === data.total;
-
-    statusEl.className   = `output-status ${allPass ? 'status-accepted' : 'status-error'}`;
-    statusEl.textContent = allPass
-      ? `✓ Accepted (${data.passed}/${data.total})`
-      : `✗ Wrong Answer (${data.passed}/${data.total})`;
-
-    let html = '';
-    if (data.runtime || data.memory) {
-      html += `<div style="margin-bottom:10px;color:var(--text-dim)">
-        Runtime: <span style="color:var(--purple-xlight)">${data.runtime || '—'}</span>
-        &nbsp;|&nbsp;
-        Memory: <span style="color:var(--purple-xlight)">${data.memory || '—'}</span>
-      </div>`;
-    }
-    (data.results || []).forEach(r => {
-      html += `<div style="margin-bottom:6px">
-        <span class="${r.pass ? 'out-pass' : 'out-fail'}">${r.pass ? '✓' : '✗'} Test ${r.test}</span>
-        <span style="color:var(--muted);font-size:11px;margin-left:8px">
-          Input: ${r.input} → Expected: ${r.expected}
-          ${!r.pass ? ` · Got: <span class="out-fail">${r.got}</span>` : ''}
-        </span>
-      </div>`;
-    });
-    bodyEl.innerHTML = html || '<span class="out-info">No output returned.</span>';
+ 
+    statusEl.className   = `output-status ${ok ? 'status-accepted' : 'status-error'}`;
+    statusEl.textContent = ok ? 'Response received' : 'Request failed';
+ 
+    // Show the response exactly as JSON, pretty-printed
+    bodyEl.textContent = JSON.stringify(data, null, 2);
   }
-
+ 
   function closeOutput() {
     document.getElementById('outputPane').classList.remove('open');
   }
-
+ 
   /* ════════════════════════════════════════════════
      DRAGGABLE DIVIDER
   ════════════════════════════════════════════════ */
@@ -978,7 +978,7 @@
   const container = document.getElementById('splitContainer');
   const paneLeft  = document.getElementById('paneLeft');
   let dragging = false, startX = 0, startW = 0;
-
+ 
   divider.addEventListener('mousedown', e => {
     dragging = true; startX = e.clientX; startW = paneLeft.offsetWidth;
     divider.classList.add('dragging');
