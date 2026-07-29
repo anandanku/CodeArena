@@ -12,7 +12,7 @@ import authRouter from "./auth.js";
 import createRoomRouter from "./createroom.js";
 import joinRoomRouter from "./joinroom.js";
 import problemsRouter from "./problems.js";
-
+import submitionRouter from "./submitions.js";
 /* ENV */
 dotenv.config();
 
