@@ -100,6 +100,9 @@ app.get("/dashboard", (req, res) => {
   res.redirect("/homepage.html");
 });
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "loginpage.html"));
+});
 /* ============================= */
 /* SERVER */
 /* ============================= */
