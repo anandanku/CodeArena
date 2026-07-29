@@ -30,17 +30,18 @@ router.post("/", async (req, res) => {
             code: snippets,
             input: ""
             })
-  }
-);
+          }
+    );
+    const data=await response.json();
         return res.status(200).json({
             success: true,
-            output: response.data.output,
-            error: response.data.error,
-            status: response.data.status,
-            exitCode: response.data.exit_code,
-            executionTime: response.data.time,
-            totalTime: response.data.total,
-            memory: response.data.memory
+            output: data.output,
+            error: data.error,
+            status: data.status,
+            exitCode: data.exit_code,
+            executionTime: data.time,
+            totalTime: data.total,
+            memory: data.memory
         });
 
     } catch (err) {
