@@ -96,8 +96,8 @@ app.use("/submition",submitionRouter);
 /* FRONTEND ROUTES */
 /* ============================= */
 
-app.get("/dashboard", (req, res) => {
-  res.redirect("/homepage.html");
+app.get("/home", (req, res) => {
+  res.sendFile(path.join(__dirname, "homepage.html"));
 });
 
 app.get("/", (req, res) => {
