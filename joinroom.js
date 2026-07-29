@@ -3,7 +3,7 @@ import redis from "./redisconnection.js";
 
 const router = express.Router();
 
-router.post("/joinroom", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { code, googleId } = req.body;
 
