@@ -83,7 +83,7 @@ app.use(passport.session());
 app.use("/auth", authRouter);
 
 /* Room creation */
-app.use("/", createRoomRouter);
+app.use("/createroom", createRoomRouter);
 
 /* Join room */
 app.use("/", joinRoomRouter);
