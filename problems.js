@@ -33,7 +33,7 @@ function toString(val) {
   return JSON.stringify(val);
 }
 
-router.get("/problems", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { room } = req.query;
 
