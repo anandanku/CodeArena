@@ -17,21 +17,21 @@ router.post("/", async (req, res) => {
             });
         }
 
-        const response = await axios.post(
-            "https://api.onlinecompiler.io/api/run-code-sync/",
-            {
-                compiler: "g++-15",
-                code: snippets,
-                input: ""
+        const response = await fetch(
+          "https://api.onlinecompiler.io/api/run-code-sync/",
+          {
+            method: "POST",
+            headers: {
+            "Authorization": process.env.ONLINECOMPILER_API_KEY,
+            "Content-Type": "application/json"
             },
-            {
-                headers: {
-                    Authorization: process.env.ONLINECOMPILER_API_KEY,
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
+            body: JSON.stringify({
+            compiler: "g++-15",
+            code: snippets,
+            input: ""
+            })
+  }
+);
         return res.status(200).json({
             success: true,
             output: response.data.output,
