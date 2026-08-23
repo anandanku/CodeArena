@@ -646,7 +646,7 @@
           );
 
           setTimeout(() => {
-            window.location.href = `/contest.html?room=${data.roomCode}`;
+            window.location.href = `/contest?room=${data.roomCode}`;
           }, 800);
         } else {
           throw new Error(data.error || 'Server error');
@@ -723,7 +723,7 @@
           );
 
           setTimeout(() => {
-            window.location.href = `/contest.html?room=${val}`;
+            window.location.href = `/contest?room=${val}`;
           }, 900);
         } else {
           throw new Error(data.error || 'Failed to join room');
