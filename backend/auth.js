@@ -64,7 +64,7 @@ passport.use(
   )
 );
 router.get(
-  "/google",
+  "/",
   (req,res,next)=>{
     if(req.isAuthenticated && req.isAuthenticated()){
       return res.redirect("/home")
