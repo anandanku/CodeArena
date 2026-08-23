@@ -81,9 +81,6 @@ app.use(passport.session());
 
 /* Authentication */
 app.use("/auth", authRouter);
-
-
-app.use(authRouter);
 /* Room creation */
 app.use("/createroom", createRoomRouter);
 
@@ -102,11 +99,11 @@ app.get("/home",(req, res) => {
   if(!req.isAuthenticated && !req.isAuthenticated()){
     return res.redirect("/");
   }
-  res.sendFile(path.join(__dirname,"..","frontend","homepage.html"));
+  res.sendFile(path.join(__dirname,"..","frontend","private","homepage.html"));
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname,"..","frontend","loginpage.html"));
+  res.sendFile(path.join(__dirname,"..","frontend","public","loginpage.html"));
 });
 /* ============================= */
 /* SERVER */
