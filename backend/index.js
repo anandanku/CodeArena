@@ -91,6 +91,8 @@ app.use("/joinroom", joinRoomRouter);
 app.use("/problems", problemsRouter);
 
 app.use("/submition",submitionRouter);
+
+app.use("/contest",contestRouter);
 /* ============================= */
 /* FRONTEND ROUTES */
 /* ============================= */
@@ -101,7 +103,6 @@ app.get("/home",(req, res) => {
   }
   res.sendFile(path.join(__dirname,"..","frontend","private","homepage.html"));
 });
-
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname,"..","frontend","public","loginpage.html"));
 });
