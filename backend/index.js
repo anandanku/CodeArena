@@ -103,6 +103,15 @@ app.get("/home",(req, res) => {
   }
   res.sendFile(path.join(__dirname,"..","frontend","private","homepage.html"));
 });
+
+// ye wala hata do agar hai:
+app.get("/contest", (req, res) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  res.sendFile(path.join(__dirname, "..", "frontend", "private", "contest.html"));
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname,"..","frontend","public","loginpage.html"));
 });
