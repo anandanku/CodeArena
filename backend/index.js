@@ -91,8 +91,6 @@ app.use("/joinroom", joinRoomRouter);
 app.use("/problems", problemsRouter);
 
 app.use("/submition",submitionRouter);
-
-app.use("/contest",contestRouter);
 /* ============================= */
 /* FRONTEND ROUTES */
 /* ============================= */
