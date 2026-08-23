@@ -98,7 +98,10 @@ app.use("/submition",submitionRouter);
 /* FRONTEND ROUTES */
 /* ============================= */
 
-app.get("/home", (req, res) => {
+app.get("/home",(req, res) => {
+  if(!req.isAuthenticated && !req.isAuthenticated()){
+    return res.redirect("/");
+  }
   res.sendFile(path.join(__dirname,"..","frontend","homepage.html"));
 });
 
