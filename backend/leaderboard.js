@@ -24,7 +24,7 @@ export async function updateLeaderboard(req, roomCode) {
 
         const room = JSON.parse(roomData);        
 
-        const basePoints = POINTS[req.difficulty];
+        const basePoints = POINTS[req.body.difficulty];
 
         // Check whether player already exists in leaderboard
         const currentMember = await redis.hGet(
