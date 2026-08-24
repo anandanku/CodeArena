@@ -8,7 +8,7 @@ const POINTS = {
 
 export async function updateLeaderboard(req, roomCode) {
     try {
-        const { googleId, problemId } = req.body;
+        const googleId=req.user.GoogleId
         const compilerror = req.compilerror;
         const name=req.user.displayname;
         const leaderboardKey = `leaderboard:${roomCode}`;
