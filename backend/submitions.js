@@ -1,7 +1,7 @@
 import express from "express";
 import axios from "axios";
 import dotenv from "dotenv";
-
+import { updateLeaderboard } from "./leaderboard.js";
 dotenv.config();
 
 const router = express.Router();
@@ -33,6 +33,8 @@ router.post("/", async (req, res) => {
           }
     );
     const data=await response.json();
+        req.compilerror=data.error;
+        updateLeaderboard(req,req.roomCode);
         return res.status(200).json({
             success: true,
             output: data.output,
