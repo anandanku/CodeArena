@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
     );
     const data=await response.json();
         req.compilerror=data.error;
-        updateLeaderboard(req,req.roomCode);
+        updateLeaderboard(req,req.room);
         return res.status(200).json({
             success: true,
             output: data.output,
