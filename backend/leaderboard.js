@@ -8,8 +8,11 @@ const POINTS = {
 
 export async function updateLeaderboard(req, roomCode) {
     try {
-        const { googleId, name, problemId } = req.body;
+        const { googleId, problemId } = req.body;
         const compilerror = req.compilerror;
+        const name=req.user.displayname;
+        const leaderboardKey = `leaderboard:${roomCode}`;
+        const leaderboardDataKey = `leaderboard:Data:${roomCode}`;
 
         // Get room
         const roomData = await redis.get(`room:${roomCode}`);
@@ -19,54 +22,52 @@ export async function updateLeaderboard(req, roomCode) {
             return;
         }
 
-        const room = JSON.parse(roomData);
-
-        // Find problem
-        const problem = room.problems.find(
-            p => String(p._id) === String(problemId)
-        );
-
-        if (!problem) {
-            console.log("Problem not found");
-            return;
-        }
+        const room = JSON.parse(roomData);        
 
         const basePoints = POINTS[problem.difficulty];
 
-        const leaderboardKey = `leaderboard:${roomCode}`;
-
-        // Find existing member of this player
-        const members = await redis.zRange(
-            leaderboardKey,
-            0,
-            -1
+        // Check whether player already exists in leaderboard
+        const currentMember = await redis.hGet(
+            leaderboardDataKey,
+            googleId
         );
 
-        let oldMember = null;
         let currentPoints = 0;
 
-        for (const member of members) {
-            const parts = member.split(":");
-            const memberGoogleId = parts[parts.length - 1];
+        // --------------------------------------------------
+        // PLAYER ALREADY EXISTS
+        // --------------------------------------------------
 
-            if (memberGoogleId === googleId) {
-                oldMember = member;
+        if (currentMember) {
 
-                const oldScore = await redis.zScore(
-                    leaderboardKey,
-                    member
-                );
+            // Get current score from ZSET
+            const oldScore = await redis.zScore(
+                leaderboardKey,
+                currentMember
+            );
 
+            if (oldScore !== null) {
                 currentPoints = -Number(oldScore);
-                break;
             }
+
+            // Remove old member because time/member may change
+            await redis.zRem(
+                leaderboardKey,
+                currentMember
+            );
         }
 
-        // Calculate new points
+        // --------------------------------------------------
+        // UPDATE POINTS
+        // --------------------------------------------------
+
         if (compilerror === "") {
+
             // Accepted
             currentPoints += basePoints;
+
         } else {
+
             // Wrong submission
             currentPoints -= basePoints / 10;
 
@@ -75,24 +76,30 @@ export async function updateLeaderboard(req, roomCode) {
             }
         }
 
-        // Time since room creation
-        const completionTime = Date.now() - room.createdAt;
+        // --------------------------------------------------
+        // CREATE NEW MEMBER
+        // --------------------------------------------------
 
-        const paddedTime = String(completionTime)
-            .padStart(16, "0");
+        const completionTime =Date.now() - room.createdAt;
 
-        const newMember =
-            `${paddedTime}:${name}:${googleId}`;
+        const paddedTime = String(completionTime).padStart(16, "0");
 
-        // Remove old entry
-        if (oldMember) {
-            await redis.zRem(
-                leaderboardKey,
-                oldMember
-            );
-        }
+        const newMember =`${paddedTime}:${name}:${googleId}`;
 
-        // Add updated entry
+        // --------------------------------------------------
+        // UPDATE HASH
+        // --------------------------------------------------
+
+        await redis.hSet(
+            leaderboardDataKey,
+            googleId,
+            newMember
+        );
+
+        // --------------------------------------------------
+        // UPDATE / CREATE ZSET
+        // --------------------------------------------------
+
         await redis.zAdd(
             leaderboardKey,
             {
@@ -101,7 +108,34 @@ export async function updateLeaderboard(req, roomCode) {
             }
         );
 
+        // --------------------------------------------------
+        // SET TTL
+        // --------------------------------------------------
+
+        const remainingTTL = await redis.ttl(
+            `room:${roomCode}`
+        );
+
+        if (remainingTTL > 0) {
+            await redis.expire(
+                leaderboardKey,
+                remainingTTL
+            );
+
+            await redis.expire(
+                leaderboardDataKey,
+                remainingTTL
+            );
+        }
+
+        console.log(
+            `Leaderboard updated for ${googleId}: ${currentPoints} points`
+        );
+
     } catch (err) {
-        console.error("[leaderboard]", err);
+        console.error(
+            "[leaderboard]",
+            err
+        );
     }
 }
