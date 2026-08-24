@@ -1,9 +1,9 @@
 import redis from "./redisconnection.js";
 
 const POINTS = {
-    easy: 20,
-    medium: 40,
-    hard: 60
+    Easy: 20,
+    Medium: 40,
+    Hard: 60
 };
 
 export async function updateLeaderboard(req, roomCode) {
