@@ -870,7 +870,7 @@
  
     // Load C++ snippet into Monaco
     if (monacoEditor) {
-      monacoEditor.setValue(data.snippets || '');
+      monacoEditor.setValue(data.snippets.cpp || '');
       document.getElementById('activeTab').textContent = 'solution.cpp';
     }
   }
