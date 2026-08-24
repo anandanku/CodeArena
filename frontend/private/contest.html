@@ -1309,6 +1309,14 @@
         {
           data: [...]
         }
+
+        NOTE: This client does NOT re-sort the array — whatever
+        order the server sends is exactly the order rendered
+        (index 0 = rank 1). The backend is expected to return
+        the leaderboard already sorted (e.g. by score desc, then
+        by solved count / earliest submission time as a
+        tiebreaker). If the server ever sends an unsorted array,
+        the ranks shown here will be wrong.
       */
 
       const leaderboard =
@@ -1466,7 +1474,9 @@
      SUBMIT CODE
      - Reads the CURRENT contents of the Monaco editor
        (i.e. whatever the user has typed/edited)
-     - POSTs it to /submition
+     - POSTs it to /submition, including the room code
+       so the server knows which contest/room this
+       submission belongs to
      - Also sends the CURRENT problem difficulty
      - Renders the raw JSON response in the sliding
        output panel (lower-right corner)
@@ -1523,6 +1533,8 @@
           },
 
           body: JSON.stringify({
+
+            room: ROOM_CODE,
 
             snippets: code,
 
