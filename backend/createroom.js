@@ -132,9 +132,14 @@ router.post("/", async (req, res) => {
       score: 0,
       value: member
     });
-
     await redis.expire(leaderboardKey, totalTTL);
-    
+    const leaderboardDataKey = `leaderboard:Data:${roomCode}`;
+    await redis.hSet(
+        leaderboardDataKey, // Hash ka naam
+        googleId,           // ← KEY
+        member              // ← VALUE
+    );
+    await redis.expire(leaderboardDataKey, totalTTL);
     // problems not included in response — frontend fetches via /problems
     res.status(201).json({
       success:         true,
