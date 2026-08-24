@@ -22,7 +22,7 @@ function getContestDuration(difficulty) {
 
 router.post("/", async (req, res) => {
   try {
-    const { difficulty, waitingTime, googleId } = req.body;
+    const { difficulty, waitingTime, googleId,name } = req.body;
 
     // ── Validate inputs ──────────────────────────────────────
     if (!["easy", "medium", "hard"].includes(difficulty)) {
@@ -123,6 +123,18 @@ router.post("/", async (req, res) => {
       { EX: totalTTL }
     );
 
+    // Initialize leaderboard
+    const leaderboardKey = `leaderboard:${roomCode}`;
+    const entrytime=String(Date.now()-roomData.createdAt).padStart(16, "0");
+    const member = `${entrytime}:${name}:${googleId}`;
+
+    await redis.zAdd(leaderboardKey, {
+      score: 0,
+      value: member
+    });
+
+    await redis.expire(leaderboardKey, totalTTL);
+    
     // problems not included in response — frontend fetches via /problems
     res.status(201).json({
       success:         true,
