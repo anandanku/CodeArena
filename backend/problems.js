@@ -35,13 +35,8 @@ router.get("/", async (req, res) => {
     const parsedRoom = JSON.parse(roomData);
 
     res.json({
-      success:          true,
-      roomCode:         sanitizedCode,
-      contestDuration:  parsedRoom.contestDuration,
-      contestStartTime: parsedRoom.contestStartTime || null,   // set by new createroom.js
-      createdAt:        parsedRoom.createdAt        || null,   // fallback for old rooms
-      waitingTime:      parsedRoom.waitingTime      || null,   // fallback for old rooms
-      problems,
+      success:true,
+      ...parsedRoom
     });
 
   } catch (err) {
