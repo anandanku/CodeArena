@@ -13,6 +13,7 @@ import createRoomRouter from "./createroom.js";
 import joinRoomRouter from "./joinroom.js";
 import problemsRouter from "./problems.js";
 import submitionRouter from "./submitions.js";
+import liveleaderboardRouter from "./liveleaderboard.js";
 /* ENV */
 dotenv.config();
 
@@ -92,6 +93,8 @@ app.use("/joinroom", joinRoomRouter);
 app.use("/problems", problemsRouter);
 
 app.use("/submition",submitionRouter);
+
+app.use("/leaderboard",liveleaderboardRouter);
 /* ============================= */
 /* FRONTEND ROUTES */
 /* ============================= */
