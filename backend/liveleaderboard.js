@@ -29,36 +29,17 @@ router.get("/", async (req, res) => {
         const leaderboardKey = `leaderboard:${roomCode}`;
 
         // Fetch live leaderboard
-        const rawLeaderboard = await redis.zRange(
-            leaderboardKey,
-            0,
-            -1,
-            {
-                WITHSCORES: true
-            }
-        );
+        const rawLeaderboard =await redis.zRangeWithScores(leaderboardKey,0,-1);
 
-        const leaderboard = [];
-
-        for (let i = 0; i < rawLeaderboard.length; i += 2) {
-
-            const member = rawLeaderboard[i];
-            const redisScore = rawLeaderboard[i + 1];
-
-            // member = time:name:googleId
-            const parts = member.split(":");
-
-            const username = parts.slice(1, -1).join(":");
-
-            const score = -Number(redisScore);
-
-            leaderboard.push({
+        const leaderboard = rawLeaderboard.map(({value:playerstring,score:score})=>{
+            playerstring=playerstring.split(":");
+            const username=playerstring.slice(1, -1).join(":");
+            return {
                 username,
-                score,
-                solved: 0
-            });
-        }
-
+                score:-Number(score),
+                solved:0
+            }
+        });
         return res.status(200).json(leaderboard);
 
     } catch (err) {
