@@ -14,6 +14,7 @@ import joinRoomRouter from "./joinroom.js";
 import problemsRouter from "./problems.js";
 import submitionRouter from "./submitions.js";
 import liveleaderboardRouter from "./liveleaderboard.js";
+import healthcheckrouter from "./healthcheck.js";
 /* ENV */
 dotenv.config();
 
@@ -95,9 +96,8 @@ app.use("/problems", problemsRouter);
 app.use("/submition",submitionRouter);
 
 app.use("/leaderboard",liveleaderboardRouter);
-/* ============================= */
-/* FRONTEND ROUTES */
-/* ============================= */
+
+app.use("/health",healthcheckrouter);
 
 app.get("/home",(req, res) => {
   if(!req.isAuthenticated && !req.isAuthenticated()){
@@ -117,9 +117,6 @@ app.get("/contest", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname,"..","frontend","public","loginpage.html"));
 });
-/* ============================= */
-/* SERVER */
-/* ============================= */
 
 const PORT = process.env.PORT || 10000;
 
