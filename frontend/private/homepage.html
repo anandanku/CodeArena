@@ -646,6 +646,7 @@
           );
 
           setTimeout(() => {
+            window.location.href = `/contest.html?room=${data.roomCode}`;
             window.location.href = `/contest?room=${data.roomCode}`;
           }, 800);
         } else {
@@ -676,78 +677,65 @@
        JOIN ROOM
     ══════════════════════════════════════════ */
     async function joinRoom() {
-  const inp   = document.getElementById('roomCode');
-  const hint  = document.getElementById('joinHint');
-  const arrow = document.getElementById('joinArrow');
-  const val   = inp.value.trim();
+      const inp   = document.getElementById('roomCode');
+      const hint  = document.getElementById('joinHint');
+      const arrow = document.getElementById('joinArrow');
+      const val   = inp.value.trim();
 
-  inp.style.borderColor = '';
-  inp.style.boxShadow   = '';
-  hint.style.color      = '';
-  hint.textContent      = '';
+      inp.style.borderColor = '';
+      inp.style.boxShadow   = '';
+      hint.style.color      = '';
+      hint.textContent      = '';
 
-  if (val.length !== 6) {
-    setInputError(inp, hint, '⚠  Room code must be exactly 6 characters.');
-    // Optional: redirect on client-side validation failure too. Remove if not wanted.
-    setTimeout(() => { window.location.href = '/home'; }, 1800);
-    return;
-  }
+      if (val.length !== 6) {
+        setInputError(inp, hint, '⚠  Room code must be exactly 6 characters.');
+        return;
+      }
 
-  arrow.style.pointerEvents = 'none';
-  arrow.style.opacity       = '0.6';
-  hint.style.color          = 'var(--text-dim)';
-  hint.textContent          = '⏳ Joining...';
+      arrow.style.pointerEvents = 'none';
+      arrow.style.opacity       = '0.6';
+      hint.style.color          = 'var(--text-dim)';
+      hint.textContent          = '⏳ Joining...';
 
-  try {
-    const response = await fetch('/joinroom', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        code:     val,
-        googleId: currentUser.googleId
-      })
-    });
+      try {
+        const response = await fetch('/joinroom', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            code:     val,
+            googleId: currentUser.googleId   // now correctly populated
+          })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (response.ok && data.success) {
-      arrow.style.background = 'linear-gradient(135deg,#059669,#047857)';
-      arrow.style.opacity    = '1';
-      arrow.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
-      hint.style.color = 'var(--green)';
+        if (response.ok && data.success) {
+          arrow.style.background = 'linear-gradient(135deg,#059669,#047857)';
+          arrow.style.opacity    = '1';
+          arrow.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+          hint.style.color = 'var(--green)';
 
-      const secsLeft = Math.floor((data.waitingTimeLeftMs || 0) / 1000);
-      hint.textContent = `✓  Joined! ${secsLeft}s left in lobby — redirecting...`;
+          const secsLeft = Math.floor((data.waitingTimeLeftMs || 0) / 1000);
+          hint.textContent = `✓  Joined! ${secsLeft}s left in lobby — redirecting...`;
 
-      sessionStorage.setItem(
-        `waitingTimeLeft_${val}`,
-        data.waitingTimeLeftMs || 0
-      );
+          sessionStorage.setItem(
+            `waitingTimeLeft_${val}`,
+            data.waitingTimeLeftMs || 0
+          );
 
-      setTimeout(() => {
-        window.location.href = `/contest?room=${val}`;
-      }, 900);
-    } else {
-      // ── FAILED JOIN: show error, then redirect to /home ──
-      setInputError(inp, hint, `⚠  ${data.error || 'Failed to join room'}`);
-      arrow.style.pointerEvents = 'auto';
-      arrow.style.opacity       = '1';
-
-      setTimeout(() => {
-        window.location.href = data.redirectTo || '/home';
-      }, 1800); // gives the user time to read the error before leaving the page
+          setTimeout(() => {
+            window.location.href = `/contest.html?room=${val}`;
+            window.location.href = `/contest?room=${val}`;
+          }, 900);
+        } else {
+          throw new Error(data.error || 'Failed to join room');
+        }
+      } catch (err) {
+        setInputError(inp, hint, `⚠  ${err.message}`);
+        arrow.style.pointerEvents = 'auto';
+        arrow.style.opacity       = '1';
+      }
     }
-  } catch (err) {
-    // ── Network/unexpected error: same treatment ──
-    setInputError(inp, hint, `⚠  ${err.message}`);
-    arrow.style.pointerEvents = 'auto';
-    arrow.style.opacity       = '1';
-
-    setTimeout(() => {
-      window.location.href = '/home';
-    }, 1800);
-  }
-}
 
     function setInputError(inp, hint, msg) {
       inp.style.borderColor = 'var(--hard)';
