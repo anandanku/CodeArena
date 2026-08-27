@@ -79,7 +79,7 @@ router.get("/", (req, res) => {
 });
 
 router.get(
-  "/google/callback",
+  "/google",
   passport.authenticate("google", {
     failureRedirect: process.env.LOGIN_FAIL_REDIRECT || "/login",
     session: true,
