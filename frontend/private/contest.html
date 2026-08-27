@@ -891,10 +891,8 @@
     } catch(e) {
 
       console.warn('[contest] Problem fetch failed:', e.message);
-
-      allProblems              = [];
-      window._contestDuration  = 3600;
-      window._contestStartTime = Date.now() - 1000;
+      window.location.href = '/home';
+      return;
     }
 
     currentProblemIndex = 0;
