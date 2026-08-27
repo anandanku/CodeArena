@@ -82,6 +82,10 @@ app.use(passport.session());
 /* ============================= */
 
 /* Authentication */
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname,"..","frontend","public","loginpage.html"));
+});
+
 app.use("/",authRouter);
 app.use("/auth", authRouter);
 /* Room creation */
@@ -114,9 +118,6 @@ app.get("/contest", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "private", "contest.html"));
 });
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname,"..","frontend","public","loginpage.html"));
-});
 
 const PORT = process.env.PORT || 10000;
 
