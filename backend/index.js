@@ -82,9 +82,6 @@ app.use(passport.session());
 /* ============================= */
 
 /* Authentication */
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname,"..","frontend","public","loginpage.html"));
-});
 
 app.use("/",authRouter);
 app.use("/auth", authRouter);
