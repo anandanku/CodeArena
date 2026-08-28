@@ -67,7 +67,7 @@ router.get("/",(req,res,next)=>{
     if(req.isAuthenticated && req.isAuthenticated()){
       return res.redirect("/home")
     }
-    res.redirect("../frontend/loginpage.html");
+    res.redirect("../frontend/public/loginpage.html");
   });
 
 router.get(
