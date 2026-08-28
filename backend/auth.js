@@ -63,15 +63,12 @@ passport.use(
     }
   )
 );
-router.get(
-  "/",
-  (req,res,next)=>{
+router.get("/",(req,res,next)=>{
     if(req.isAuthenticated && req.isAuthenticated()){
       return res.redirect("/home")
     }
-  },
-  res.redirect("/loginpage.html");
-);
+    res.redirect("/loginpage.html");
+  });
 
 router.get(
   "/google",
