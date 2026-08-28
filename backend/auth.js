@@ -67,7 +67,7 @@ router.get("/",(req,res,next)=>{
     if(req.isAuthenticated && req.isAuthenticated()){
       return res.redirect("/home")
     }
-   return res.sendFile(path.join(__dirname, "..", "frontend", "loginpage.html"));
+   return res.sendFile(path.join(__dirname, "..", "frontend", "public", "loginpage.html"));
 });
 
 router.get(
