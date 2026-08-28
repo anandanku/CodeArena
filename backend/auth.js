@@ -71,12 +71,10 @@ router.get(
     }
     next()
   },
+  res.redirect("/loginpage.html");
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-router.get("/", (req, res) => {
-  res.redirect("/loginpage.html");
-});
 
 router.get(
   "/google/callback",
