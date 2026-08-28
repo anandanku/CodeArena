@@ -69,10 +69,15 @@ router.get(
     if(req.isAuthenticated && req.isAuthenticated()){
       return res.redirect("/home")
     }
-    next()
   },
   res.redirect("/loginpage.html");
-  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
 );
 
 
